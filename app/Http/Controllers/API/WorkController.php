@@ -10,7 +10,7 @@ class WorkController extends Controller
 {
     public static function index()
     {
-        return WorkResource::collection(Work::latest()->paginate(2));
+        return WorkResource::collection(Work::latest()->paginate(5));
     }
 
     public static function featured()
