@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -27,24 +28,27 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Имя'),
-                TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Телефон'),
-                TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Textarea::make('message')
-                    ->maxLength(255)
-                    ->label('Сообщение'),
-                FileUpload::make('attachment')
-                    ->downloadable()
-                    ->label('Файл'),
+                Section::make()->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Имя'),
+                    TextInput::make('phone')
+                        ->tel()
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Телефон'),
+                    TextInput::make('email')
+                        ->email()
+                        ->maxLength(255),
+                    Textarea::make('message')
+                        ->label('Сообщение')
+                        ->rows(5),
+                    FileUpload::make('attachment')
+                        ->downloadable()
+                        ->label('Файл'),
+                ])
+
             ]);
     }
 
