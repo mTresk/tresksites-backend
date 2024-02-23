@@ -23,6 +23,7 @@ class WorkResource extends JsonResource
                 'imageX2' => $this->featured->featuredX2,
                 'imageWebpX2' => $this->featured->featuredWebpX2,
             ],
+            'seo' => SeoResource::make($this->seo)
         ];
     }
 }

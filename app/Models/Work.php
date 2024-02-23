@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
@@ -16,6 +17,11 @@ class Work extends Model implements HasMedia
     protected $fillable = ['name', 'slug', 'label', 'url', 'list', 'content', 'is_featured'];
 
     protected $casts = ['content' => 'array', 'is_featured' => 'boolean'];
+
+    public function seo(): MorphOne
+    {
+        return $this->morphOne(SEO::class, 'model')->withDefault();
+    }
 
     public function registerMediaConversions(Media $media = null): void
     {

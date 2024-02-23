@@ -3,8 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\WorkResource\Pages;
+use App\Filament\Services\SEO;
 use App\Models\Work;
 use Filament\Forms\Components\Builder;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
@@ -34,81 +36,83 @@ class WorkResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
-                    ->schema([
-                        SpatieMediaLibraryFileUpload::make('featured')
-                            ->collection('featured')
-                            ->columnSpan(2)
-                            ->label('Основное изображение')
-                            ->required(),
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->live()
-                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                                if (($get('slug') ?? '') !== Str::slug($old)) {
-                                    return;
-                                }
+                Section::make('Контент')->schema([
+                    Section::make()
+                        ->schema([
+                            SpatieMediaLibraryFileUpload::make('featured')
+                                ->collection('featured')
+                                ->label('Основное изображение')
+                                ->required(),
+                            TextInput::make('name')
+                                ->required()
+                                ->maxLength(255)
+                                ->live()
+                                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                    if (($get('slug') ?? '') !== Str::slug($old)) {
+                                        return;
+                                    }
 
-                                $set('slug', Str::slug($state));
-                            })
-                            ->label('Заголовок'),
-                        TextInput::make('slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->label('Слаг'),
-                        TextInput::make('label')
-                            ->maxLength(255)
-                            ->label('Лейбл'),
-                        TextInput::make('url')
-                            ->maxLength(255)
-                            ->label('Ссылка'),
-                        Toggle::make('is_featured')
-                            ->required()
-                            ->label('В подборке'),
-                        RichEditor::make('list')
-                            ->maxLength(65535)
-                            ->columnSpanFull()
-                            ->label('Список'),
-                    ])
-                    ->columns(2),
-                Builder::make('content')
-                    ->blocks([
-                        Builder\Block::make('block')
-                            ->schema([
-                                RichEditor::make('html')
-                                    ->required()
-                                    ->label('Текст'),
-                                Hidden::make('gallery_id')
-                                    ->default(fn() => Str::random(12)),
-                                SpatieMediaLibraryFileUpload::make('images')
-                                    ->label('Изображение')
-                                    ->collection('works')
-                                    ->multiple()
-                                    ->required()
-                                    ->customProperties(fn(Get $get): array => [
-                                        'gallery_id' => $get('gallery_id'),
-                                    ])
-                                    ->filterMediaUsing(
-                                        fn(Collection $media, Get $get): Collection => $media->where(
-                                            'custom_properties.gallery_id',
-                                            $get('gallery_id')
+                                    $set('slug', Str::slug($state));
+                                })
+                                ->label('Заголовок'),
+                            TextInput::make('slug')
+                                ->required()
+                                ->maxLength(255)
+                                ->label('Слаг'),
+                            TextInput::make('label')
+                                ->maxLength(255)
+                                ->label('Лейбл'),
+                            TextInput::make('url')
+                                ->maxLength(255)
+                                ->label('Ссылка'),
+                            Toggle::make('is_featured')
+                                ->required()
+                                ->label('В подборке'),
+                            RichEditor::make('list')
+                                ->maxLength(65535)
+                                ->columnSpanFull()
+                                ->label('Список'),
+                        ]),
+                    Builder::make('content')
+                        ->blocks([
+                            Builder\Block::make('block')
+                                ->schema([
+                                    RichEditor::make('html')
+                                        ->required()
+                                        ->label('Текст'),
+                                    Hidden::make('gallery_id')
+                                        ->default(fn() => Str::random(12)),
+                                    SpatieMediaLibraryFileUpload::make('images')
+                                        ->label('Изображение')
+                                        ->collection('works')
+                                        ->multiple()
+                                        ->required()
+                                        ->customProperties(fn(Get $get): array => [
+                                            'gallery_id' => $get('gallery_id'),
+                                        ])
+                                        ->filterMediaUsing(
+                                            fn(Collection $media, Get $get): Collection => $media->where(
+                                                'custom_properties.gallery_id',
+                                                $get('gallery_id')
+                                            ),
                                         ),
-                                    ),
-                            ])
-                            ->label('Текст + изображение'),
-                        Builder\Block::make('text')
-                            ->schema([
-                                RichEditor::make('html')
-                                    ->required()
-                                    ->label('Текст'),
-                            ])
-                            ->label('Текст')
-                    ])
-                    ->columnSpan(2)
-                    ->hiddenLabel()
-                    ->addActionLabel('Добавить блок'),
-            ]);
+                                ])
+                                ->label('Текст + изображение'),
+                            Builder\Block::make('text')
+                                ->schema([
+                                    RichEditor::make('html')
+                                        ->required()
+                                        ->label('Текст'),
+                                ])
+                                ->label('Текст')
+                        ])
+                        ->hiddenLabel()
+                        ->addActionLabel('Добавить блок'),
+                ])->columnSpan(2),
+                Section::make('SEO')
+                    ->schema([
+                        SEO::make()])->columnSpan(1)
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
