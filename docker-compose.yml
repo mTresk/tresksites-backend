@@ -30,7 +30,7 @@ services:
         container_name: tresksites_server
         restart: always
         labels:
-            - "traefik.http.routers.crm_server.rule=Host(`${PROJECT_BASE_URL}`)"
+            - "traefik.http.routers.tresksites_server.rule=Host(`${PROJECT_BASE_URL}`)"
             - "traefik.port=80"
             - "traefik.docker.network=web"
             - "traefik.http.routers.tresksites_server.entrypoints=websecure"
@@ -45,7 +45,9 @@ services:
             - dbdata:/var/lib/mysql
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
         ports:
             - "33063:3306"
         container_name: tresksites_db
