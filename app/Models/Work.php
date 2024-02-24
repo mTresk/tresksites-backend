@@ -28,54 +28,46 @@ class Work extends Model implements HasMedia
         $this->addMediaConversion('featured')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 1058)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('featuredWebp')
             ->performOnCollections('featured')
             ->format('webp')
             ->fit(Fit::Contain, 1058)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('featured@2')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 2116)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('featuredWebp@2')
             ->performOnCollections('featured')
             ->format('webp')
             ->fit(Fit::Contain, 2116)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('work')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 1000)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('workWebp')
             ->performOnCollections('works')
             ->format('webp')
             ->fit(Fit::Contain, 1000)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('work@2')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 2000)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
 
         $this->addMediaConversion('workWebp@2')
             ->performOnCollections('works')
             ->format('webp')
             ->fit(Fit::Contain, 2000)
-            ->nonQueued()
-            ->nonOptimized();
+            ->nonQueued();
     }
 
 
@@ -85,8 +77,8 @@ class Work extends Model implements HasMedia
         $content = [];
 
         foreach ($this->content as $item) {
-            foreach ($media as $image) {
-                if (isset($item['data']['gallery_id'])) {
+            if (isset($item['data']['gallery_id'])) {
+                foreach ($media as $image) {
                     if ($item['data']['gallery_id'] == $image->custom_properties['gallery_id']) {
                         $item['data']['images'] = [
                             'image' => $image->getUrl('work'),
@@ -95,9 +87,9 @@ class Work extends Model implements HasMedia
                             'imageWebpX2' => $image->getUrl('workWebp@2')];
                         $content[] = $item;
                     }
-                } else {
-                    $content[] = $item;
                 }
+            } else {
+                $content[] = $item;
             }
         }
 
