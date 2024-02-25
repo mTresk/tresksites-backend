@@ -12,6 +12,7 @@ class RouteResource extends JsonResource
     {
         return [
             'slug' => $this->slug,
+            'updated_at' => $this->updated_at
         ];
     }
 }
