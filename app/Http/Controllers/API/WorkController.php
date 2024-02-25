@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RouteResource;
 use App\Http\Resources\WorkResource;
 use App\Models\Work;
 
@@ -29,5 +30,10 @@ class WorkController extends Controller
             ->get());
 
         return compact('data', 'otherWorks');
+    }
+
+    public static function routes()
+    {
+        return RouteResource::collection(Work::all());
     }
 }
