@@ -31,6 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'admin-email' => env('ADMIN_EMAIL')
+    'admin-email' => env('ADMIN_EMAIL'),
+
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_CHAT_ID')
+    ],
 
 ];

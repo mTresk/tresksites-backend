@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\OrderReceivedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
@@ -20,10 +21,12 @@ class OrderController extends Controller
         }
 
         if ($formData) {
-            Order::create([
+            $order = Order::create([
                 ...$formData,
                 'attachment' => $path
             ]);
+
+            event(new OrderReceivedEvent($order));
         }
 
         return response('Сообщение отправлено!', 200)
