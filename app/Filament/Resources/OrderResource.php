@@ -34,7 +34,6 @@ class OrderResource extends Resource
                         ->maxLength(255)
                         ->label('Имя'),
                     TextInput::make('phone')
-                        ->tel()
                         ->required()
                         ->maxLength(255)
                         ->label('Телефон'),
@@ -46,6 +45,7 @@ class OrderResource extends Resource
                         ->rows(5),
                     FileUpload::make('attachment')
                         ->downloadable()
+                        ->directory('attachments')
                         ->label('Файл'),
                 ])
 
