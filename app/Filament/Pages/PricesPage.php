@@ -2,45 +2,43 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Contact;
+use App\Models\Price;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
-class ContactsPage extends Page
+class PricesPage extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
-    protected static ?string $navigationLabel = 'Контакты';
-    protected static ?string $title = 'Контакты';
-    protected static ?string $slug = 'contacts-page';
-    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static ?string $navigationLabel = 'Цены';
+    protected static ?string $title = 'Цены';
+    protected static ?string $slug = 'prices-page';
+    protected static ?int $navigationSort = 4;
 
-    protected static string $view = 'filament.pages.contacts-page';
+    protected static string $view = 'filament.pages.prices-page';
 
     use InteractsWithForms;
 
     public ?array $data = [];
 
-    public ?Contact $record = null;
+    public ?Price $record = null;
 
     public function mount(): void
     {
-        $record = Contact::first();
+        $record = Price::first();
 
         if ($record) {
             $this->record = $record;
         } else {
-            $this->record = Contact::create([
-                'name' => '',
-                'text' => '',
-                'email' => '',
-                'telegram' => '',
+            $this->record = Price::create([
+                'title' => '',
+                'description' => '',
                 'block' => '',
             ]);
         }
@@ -53,21 +51,20 @@ class ContactsPage extends Page
         return $form
             ->schema([
                 Section::make([
-                    TextInput::make('name')
-                        ->label('Имя'),
-                    TextInput::make('inn')
-                        ->label('ИНН'),
-                    TextInput::make('email')
-                        ->label('Email'),
-                    TextInput::make('telegram')
-                        ->label('Telegram'),
+                    TextInput::make('title')
+                        ->label('Заголовок')
+                        ->required(),
+                    Textarea::make('description')
+                        ->label('Описание'),
                     Repeater::make('block')
                         ->schema([
-                            RichEditor::make('content')
-                                ->label('Содержимое')
+                            TextInput::make('service')
+                                ->label('Услуга'),
+                            TextInput::make('price')
+                                ->label('Цена'),
                         ])
-                        ->label('Информация')
-                        ->addActionLabel('Добавить содержимое'),
+                        ->label('Цены')
+                        ->addActionLabel('Добавить позицию'),
                 ]),
             ])
             ->model($this->record)
