@@ -64,7 +64,8 @@ class PricesPage extends Page
                                 ->label('Цена'),
                         ])
                         ->label('Цены')
-                        ->addActionLabel('Добавить позицию'),
+                        ->addActionLabel('Добавить позицию')
+                        ->columns(2),
                 ]),
             ])
             ->model($this->record)
