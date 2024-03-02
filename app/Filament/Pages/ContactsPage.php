@@ -7,6 +7,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Form;
@@ -68,6 +69,11 @@ class ContactsPage extends Page
                         ])
                         ->label('Информация')
                         ->addActionLabel('Добавить содержимое'),
+                    SpatieMediaLibraryFileUpload::make('brief')
+                        ->collection('files')
+                        ->label('Бриф')
+                        ->required()
+                        ->downloadable(),
                 ]),
             ])
             ->model($this->record)

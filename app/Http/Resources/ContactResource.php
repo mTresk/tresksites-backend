@@ -16,6 +16,7 @@ class ContactResource extends JsonResource
             'email' => $this->email,
             'telegram' => $this->telegram,
             'block' => $this->block,
+            'brief' => $this->brief,
         ];
     }
 }
