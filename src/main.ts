@@ -3,7 +3,10 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  await app.listen(3000)
+  app.setGlobalPrefix('api', {
+    exclude: ['login', 'logout', 'register', 'user'],
+  })
+  await app.listen(8000)
 }
 
 bootstrap()
