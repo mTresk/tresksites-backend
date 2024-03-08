@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { ServiceCreateDto } from './dto'
-import { FileService } from '../file/file.service'
-import { ConfigService } from '@nestjs/config'
 import { MediaService } from '../media/media.service'
 
 @Injectable()
 export class ServiceService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly fileService: FileService,
-    private readonly config: ConfigService,
     private readonly mediaService: MediaService,
   ) {}
 
@@ -26,7 +22,7 @@ export class ServiceService {
         id: item.id,
         title: item.title,
         description: item.description,
-        images: this.prepareImageLinks(item),
+        images: this.mediaService.prepareLinks(item),
         createdAt: item.createdAt,
       }
     })
@@ -47,7 +43,7 @@ export class ServiceService {
       title: data.title,
       description: data.description,
       createdAt: data.createdAt,
-      images: this.prepareImageLinks(data),
+      images: this.mediaService.prepareLinks(data),
     }
   }
 
@@ -111,22 +107,5 @@ export class ServiceService {
     await this.prisma.service.delete({ where: { id } })
 
     return 'Услуга удалена'
-  }
-
-  private prepareImageLinks(data: any) {
-    const links = (data.media[0].links as any).reduce(
-      (a: any, b: any) => ({ ...a, ...b }),
-      {},
-    )
-
-    const id = data.media[0].id
-
-    return {
-      original: `${this.config.get('APP_URL')}/storage/${id}/${links.original}`,
-      image: `${this.config.get('APP_URL')}/storage/${id}/${links.image}`,
-      imageX2: `${this.config.get('APP_URL')}/storage/${id}/${links.imageX2}`,
-      imageWebp: `${this.config.get('APP_URL')}/storage/$.id}/${links.imageWebp}`,
-      imageWebpX2: `${this.config.get('APP_URL')}/storage/${id}/${links.imageWebpX2}`,
-    }
   }
 }
