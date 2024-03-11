@@ -7,9 +7,9 @@ import { memoryStorage } from 'multer'
 import { FileModule } from './file/file.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
-import { MediaModule } from './media/media.module';
-import { WorkModule } from './work/work.module';
-import { ContactModule } from './contact/contact.module';
+import { MediaModule } from './media/media.module'
+import { WorkModule } from './work/work.module'
+import { ContactModule } from './contact/contact.module'
 
 @Module({
   imports: [
