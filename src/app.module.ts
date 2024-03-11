@@ -8,6 +8,7 @@ import { FileModule } from './file/file.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { MediaModule } from './media/media.module';
+import { WorkModule } from './work/work.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MediaModule } from './media/media.module';
     ServiceModule,
     FileModule,
     MediaModule,
+    WorkModule,
   ],
   controllers: [],
   providers: [],

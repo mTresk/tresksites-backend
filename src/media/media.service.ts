@@ -20,40 +20,33 @@ export class MediaService {
       },
       data: {
         links: conversions,
+        galleryId: url,
+      },
+    })
+  }
+
+  async remove(id: number) {
+    await this.fileService.deleteFile(String(id))
+
+    await this.prisma.media.delete({
+      where: {
+        id: id,
       },
     })
   }
 
   prepareLinks(data: any) {
-    const links = (data.media[0].links as any).reduce(
+    const links = (data.links as any).reduce(
       (a: any, b: any) => ({ ...a, ...b }),
       {},
     )
 
-    const id = data.media[0].id
-
     return {
-      original: `${this.config.get('APP_URL')}/storage/${id}/${links.original}`,
-      image: `${this.config.get('APP_URL')}/storage/${id}/${links.image}`,
-      imageX2: `${this.config.get('APP_URL')}/storage/${id}/${links.imageX2}`,
-      imageWebp: `${this.config.get('APP_URL')}/storage/$.id}/${links.imageWebp}`,
-      imageWebpX2: `${this.config.get('APP_URL')}/storage/${id}/${links.imageWebpX2}`,
+      original: `${this.config.get('APP_URL')}/storage/${data.id}/${links.original}`,
+      image: `${this.config.get('APP_URL')}/storage/${data.id}/${links.image}`,
+      imageX2: `${this.config.get('APP_URL')}/storage/${data.id}/${links.imageX2}`,
+      imageWebp: `${this.config.get('APP_URL')}/storage/${data.id}/${links.imageWebp}`,
+      imageWebpX2: `${this.config.get('APP_URL')}/storage/${data.id}/${links.imageWebpX2}`,
     }
-  }
-
-  async remove(id: number): Promise<void> {
-    const media = await this.prisma.media.findFirst({
-      where: {
-        serviceId: id,
-      },
-    })
-
-    await this.fileService.deleteFile(String(media.id))
-
-    await this.prisma.media.delete({
-      where: {
-        id: media.id,
-      },
-    })
   }
 }

@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 
 export class ServiceCreateDto {
-  @IsString({ message: 'Поле "Файл" должно быть строкой' })
-  @IsNotEmpty({ message: 'Поле "Файл" обязательно' })
-  url: string
+  @IsString({ message: 'Поле "Иконка" должно быть строкой' })
+  @IsNotEmpty({ message: 'Поле "Иконка" обязательно' })
+  icon: string
 
   @IsNotEmpty({ message: 'Поле "Заголовок" обязательно' })
   title: string

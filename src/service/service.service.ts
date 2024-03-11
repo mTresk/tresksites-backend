@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { ServiceCreateDto } from './dto'
 import { MediaService } from '../media/media.service'
+import { ServiceUpdateDto } from './dto/service-update.dto'
 
 @Injectable()
 export class ServiceService {
@@ -22,7 +23,7 @@ export class ServiceService {
         id: item.id,
         title: item.title,
         description: item.description,
-        images: this.mediaService.prepareLinks(item),
+        images: this.mediaService.prepareLinks(item.media[0]),
         createdAt: item.createdAt,
       }
     })
@@ -43,7 +44,7 @@ export class ServiceService {
       title: data.title,
       description: data.description,
       createdAt: data.createdAt,
-      images: this.mediaService.prepareLinks(data),
+      images: this.mediaService.prepareLinks(data.media[0]),
     }
   }
 
@@ -61,14 +62,20 @@ export class ServiceService {
       },
     })
 
-    await this.mediaService.generate(serviceDto.url, media.id)
+    await this.mediaService.generate(serviceDto.icon, media.id)
 
     return 'Услуга создана'
   }
 
-  async update(id: number, serviceDto: ServiceCreateDto) {
-    if (serviceDto.url) {
-      await this.mediaService.remove(id)
+  async update(id: number, serviceDto: ServiceUpdateDto) {
+    if (serviceDto.icon) {
+      const mediaToRemove = await this.prisma.media.findFirst({
+        where: {
+          serviceId: id,
+        },
+      })
+
+      await this.mediaService.remove(mediaToRemove.id)
 
       const media = await this.prisma.media.create({
         data: {
@@ -76,7 +83,7 @@ export class ServiceService {
         },
       })
 
-      await this.mediaService.generate(serviceDto.url, media.id)
+      await this.mediaService.generate(serviceDto.icon, media.id)
 
       await this.prisma.service.update({
         where: {
@@ -102,7 +109,13 @@ export class ServiceService {
   }
 
   async remove(id: number) {
-    await this.mediaService.remove(id)
+    const mediaToRemove = await this.prisma.media.findFirst({
+      where: {
+        serviceId: id,
+      },
+    })
+
+    await this.mediaService.remove(mediaToRemove.id)
 
     await this.prisma.service.delete({ where: { id } })
 

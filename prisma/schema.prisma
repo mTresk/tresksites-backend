@@ -19,13 +19,32 @@ model Service {
   @@map("services")
 }
 
+model Work {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  slug       String    @db.VarChar(255)
+  label      String?   @db.VarChar(255)
+  url        String?   @db.VarChar(255)
+  list       String    @db.Text
+  content    Json?
+  isFeatured Boolean   @map("is_featured")
+  createdAt  DateTime? @default(now()) @map("created_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
+  media      Media[]
+
+  @@map("works")
+}
+
 model Media {
   id        Int       @id @default(autoincrement())
   links     Json?
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
-  serviceId Int       @map("service_id")
   Service   Service?  @relation(fields: [serviceId], references: [id])
+  serviceId Int?      @map("service_id")
+  Work      Work?     @relation(fields: [workId], references: [id])
+  workId    Int?      @map("work_id")
+  galleryId String?   @map("gallery_id") @db.VarChar(255)
 
   @@map("media")
 }
