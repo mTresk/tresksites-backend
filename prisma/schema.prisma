@@ -45,6 +45,8 @@ model Media {
   Work      Work?     @relation(fields: [workId], references: [id])
   workId    Int?      @map("work_id")
   galleryId String?   @map("gallery_id") @db.VarChar(255)
+  Contact   Contact?  @relation(fields: [contactId], references: [id])
+  contactId Int?      @map("contact_id")
 
   @@map("media")
 }
@@ -57,4 +59,18 @@ model TemporaryFile {
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   @@map("temporary_files")
+}
+
+model Contact {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  inn       String?   @db.VarChar(255)
+  email     String?   @db.VarChar(255)
+  telegram  String?   @db.VarChar(255)
+  block     Json?
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  media     Media[]
+
+  @@map("contacts")
 }

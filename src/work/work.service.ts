@@ -35,7 +35,7 @@ export class WorkService {
       label: data.label,
       url: data.url,
       list: data.list,
-      images: this.mediaService.prepareLinks(data.media[0]),
+      files: this.mediaService.prepareLinks(data.media[0]),
       content: await this.prepareContent(data.content),
       isFeatured: data.isFeatured,
     }
@@ -174,7 +174,7 @@ export class WorkService {
           return {
             data: {
               html: item.data.html,
-              images: this.mediaService.prepareLinks(image),
+              files: this.mediaService.prepareLinks(image),
             },
           }
         } else {

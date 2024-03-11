@@ -44,7 +44,7 @@ export class ServiceService {
       title: data.title,
       description: data.description,
       createdAt: data.createdAt,
-      images: this.mediaService.prepareLinks(data.media[0]),
+      files: this.mediaService.prepareLinks(data.media[0]),
     }
   }
 
