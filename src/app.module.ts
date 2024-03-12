@@ -10,6 +10,7 @@ import { join } from 'path'
 import { MediaModule } from './media/media.module'
 import { WorkModule } from './work/work.module'
 import { ContactModule } from './contact/contact.module'
+import { PriceModule } from './price/price.module'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ContactModule } from './contact/contact.module'
     MediaModule,
     WorkModule,
     ContactModule,
+    PriceModule,
   ],
   controllers: [],
   providers: [],

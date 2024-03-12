@@ -74,3 +74,14 @@ model Contact {
 
   @@map("contacts")
 }
+
+model Price {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  block       Json?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  @@map("prices")
+}
