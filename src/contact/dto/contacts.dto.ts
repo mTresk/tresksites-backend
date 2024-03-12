@@ -25,5 +25,5 @@ export class ContactsDto {
 
   @IsString({ message: 'Поле "Бриф" должно быть строкой' })
   @IsOptional()
-  brief?: string
+  galleryId?: string
 }

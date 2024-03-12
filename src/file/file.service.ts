@@ -27,9 +27,7 @@ export class FileService {
     if (file) {
       const fileName = file.originalname
 
-      const folder = `${Math.floor(Math.random() * Date.now()).toString(
-        36,
-      )}-${fileName}`
+      const folder = `${Math.floor(Math.random() * Date.now()).toString(36)}${Math.floor(Math.random() * Date.now()).toString(36)}`
 
       const destinationFolder = `${this.config.get('NODE_PATH')}storage/tmp/${folder}`
 
@@ -78,7 +76,7 @@ export class FileService {
 
       const fileName = `${crypto.randomUUID()}-original${path.extname(temporaryFile.file)}`
 
-      const destinationFolder = `${this.config.get('NODE_PATH')}storage/${id}`
+      const destinationFolder = `${this.config.get('NODE_PATH')}storage/${folder}`
 
       if (!fs.existsSync(destinationFolder)) {
         fs.mkdirSync(destinationFolder, {
@@ -98,7 +96,7 @@ export class FileService {
 
       if (formats) {
         for (const format of formats) {
-          const fileName = await this.convertImage(temporaryFile, id, format)
+          const fileName = await this.convertImage(temporaryFile, format)
 
           conversions.push({ [format.name]: fileName })
         }
@@ -132,18 +130,14 @@ export class FileService {
     )
   }
 
-  private async convertImage(
-    temporaryFile: TemporaryFile,
-    id: number,
-    format?: any,
-  ) {
+  private async convertImage(temporaryFile: TemporaryFile, format?: any) {
     let fileName: string
 
     const temporaryPath = `${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}/${
       temporaryFile.file
     }`
 
-    const destinationFolder = `${this.config.get('NODE_PATH')}storage/${id}`
+    const destinationFolder = `${this.config.get('NODE_PATH')}storage/${temporaryFile.folder}`
 
     if (!fs.existsSync(destinationFolder)) {
       fs.mkdirSync(destinationFolder, {

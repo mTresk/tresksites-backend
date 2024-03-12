@@ -28,6 +28,12 @@ export class WorkService {
       },
     })
 
+    const media = await this.prisma.media.findFirst({
+      where: {
+        galleryId: data.galleryId,
+      },
+    })
+
     return {
       id: data.id,
       name: data.name,
@@ -35,8 +41,8 @@ export class WorkService {
       label: data.label,
       url: data.url,
       list: data.list,
-      files: this.mediaService.prepareLinks(data.media[0]),
-      content: await this.prepareContent(data.content),
+      files: this.mediaService.prepareLinks(media, data.galleryId),
+      content: await this.prepareContent(data.content, data.id),
       isFeatured: data.isFeatured,
     }
   }
@@ -51,6 +57,7 @@ export class WorkService {
         list: workDto.list,
         content: workDto.content,
         isFeatured: workDto.isFeatured,
+        galleryId: workDto.galleryId,
       },
     })
 
@@ -60,11 +67,7 @@ export class WorkService {
       },
     })
 
-    await this.mediaService.generate(
-      workDto.featuredImage,
-      media.id,
-      worksFormats,
-    )
+    await this.mediaService.generate(workDto.galleryId, media.id, worksFormats)
 
     const content: any = work.content
 
@@ -88,24 +91,31 @@ export class WorkService {
   }
 
   async update(id: number, workDto: WorkUpdateDto) {
+    const work = await this.prisma.work.findUnique({
+      where: {
+        id,
+      },
+    })
+
     const data = {
       name: workDto.name,
       slug: workDto.slug,
       label: workDto.label,
       url: workDto.url,
       list: workDto.list,
-      content: await this.prepareContent(workDto.content),
+      content: await this.prepareContent(workDto.content, id, work.content),
       isFeatured: workDto.isFeatured,
+      galleryId: workDto.galleryId ?? work.galleryId,
     }
 
-    if (workDto.featuredImage) {
-      const mediaToRemove = await this.prisma.media.findFirst({
+    if (workDto.galleryId) {
+      await this.fileService.deleteFile(work.galleryId)
+
+      await this.prisma.media.deleteMany({
         where: {
-          workId: id,
+          galleryId: work.galleryId,
         },
       })
-
-      await this.mediaService.remove(mediaToRemove.id)
 
       const media = await this.prisma.media.create({
         data: {
@@ -114,7 +124,7 @@ export class WorkService {
       })
 
       await this.mediaService.generate(
-        workDto.featuredImage,
+        workDto.galleryId,
         media.id,
         worksFormats,
       )
@@ -145,7 +155,7 @@ export class WorkService {
     })
 
     for (const item of media) {
-      await this.fileService.deleteFile(String(item.id))
+      await this.fileService.deleteFile(String(item.galleryId))
     }
 
     await this.prisma.media.deleteMany({
@@ -159,22 +169,63 @@ export class WorkService {
     return 'Работа удалена'
   }
 
-  private async prepareContent(content: any) {
+  private async prepareContent(content: any, id: number, prevContent?: any) {
     return Promise.all(
-      content.map(async (item: WorkUpdateDto['content']) => {
+      content.map(async (item: WorkUpdateDto['content'], index) => {
         const data = item?.data
 
-        if (!item?.data?.images && item?.data?.galleryId) {
-          const image = await this.prisma.media.findFirst({
-            where: {
+        const media = await this.prisma.media.findFirst({
+          where: {
+            galleryId: item.data.galleryId,
+          },
+        })
+
+        if (media) {
+          return {
+            data: {
+              html: item.data.html,
               galleryId: item.data.galleryId,
+              files: this.mediaService.prepareLinks(media, item.data.galleryId),
+            },
+          }
+        } else if (!media && item.data.galleryId) {
+          if (prevContent) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            for (const content of prevContent) {
+              if (prevContent[index]?.data?.galleryId) {
+                await this.fileService.deleteFile(
+                  prevContent[index].data.galleryId,
+                )
+
+                await this.prisma.media.deleteMany({
+                  where: {
+                    galleryId: prevContent[index].data.galleryId,
+                  },
+                })
+              }
+            }
+          }
+
+          const media = await this.prisma.media.create({
+            data: {
+              workId: id,
             },
           })
+
+          const generated = await this.mediaService.generate(
+            item.data.galleryId,
+            media.id,
+            worksFormats,
+          )
 
           return {
             data: {
               html: item.data.html,
-              files: this.mediaService.prepareLinks(image),
+              galleryId: item.data.galleryId,
+              files: this.mediaService.prepareLinks(
+                generated,
+                item.data.galleryId,
+              ),
             },
           }
         } else {

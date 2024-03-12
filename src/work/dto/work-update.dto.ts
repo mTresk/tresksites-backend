@@ -44,5 +44,5 @@ export class WorkUpdateDto {
 
   @IsString({ message: 'Поле "Изображение" должно быть строкой' })
   @IsOptional()
-  featuredImage: string
+  galleryId: string
 }

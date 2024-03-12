@@ -23,7 +23,7 @@ export class ServiceService {
         id: item.id,
         title: item.title,
         description: item.description,
-        images: this.mediaService.prepareLinks(item.media[0]),
+        images: this.mediaService.prepareLinks(item.media[0], item.galleryId),
         createdAt: item.createdAt,
       }
     })
@@ -44,7 +44,7 @@ export class ServiceService {
       title: data.title,
       description: data.description,
       createdAt: data.createdAt,
-      files: this.mediaService.prepareLinks(data.media[0]),
+      files: this.mediaService.prepareLinks(data.media[0], data.galleryId),
     }
   }
 
@@ -53,6 +53,7 @@ export class ServiceService {
       data: {
         title: serviceDto.title,
         description: serviceDto.description,
+        galleryId: serviceDto.galleryId,
       },
     })
 
@@ -62,20 +63,20 @@ export class ServiceService {
       },
     })
 
-    await this.mediaService.generate(serviceDto.icon, media.id)
+    await this.mediaService.generate(serviceDto.galleryId, media.id)
 
     return 'Услуга создана'
   }
 
   async update(id: number, serviceDto: ServiceUpdateDto) {
-    if (serviceDto.icon) {
+    if (serviceDto.galleryId) {
       const mediaToRemove = await this.prisma.media.findFirst({
         where: {
           serviceId: id,
         },
       })
 
-      await this.mediaService.remove(mediaToRemove.id)
+      await this.mediaService.remove(mediaToRemove)
 
       const media = await this.prisma.media.create({
         data: {
@@ -83,7 +84,7 @@ export class ServiceService {
         },
       })
 
-      await this.mediaService.generate(serviceDto.icon, media.id)
+      await this.mediaService.generate(serviceDto.galleryId, media.id)
 
       await this.prisma.service.update({
         where: {
@@ -109,13 +110,13 @@ export class ServiceService {
   }
 
   async remove(id: number) {
-    const mediaToRemove = await this.prisma.media.findFirst({
+    const media = await this.prisma.media.findFirst({
       where: {
         serviceId: id,
       },
     })
 
-    await this.mediaService.remove(mediaToRemove.id)
+    await this.mediaService.remove(media)
 
     await this.prisma.service.delete({ where: { id } })
 

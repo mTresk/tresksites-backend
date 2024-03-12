@@ -23,7 +23,9 @@ export class ContactService {
       email: data.email,
       telegram: data.telegram,
       block: data.block,
-      files: data.media[0] ? this.mediaService.prepareLinks(data.media[0]) : {},
+      files: data.media[0]
+        ? this.mediaService.prepareLinks(data.media[0], data.galleryId)
+        : {},
     }
   }
 
@@ -40,10 +42,11 @@ export class ContactService {
         email: contactsDto.email,
         telegram: contactsDto.telegram,
         block: contactsDto.block,
+        galleryId: contactsDto.galleryId,
       },
     })
 
-    if (contactsDto.brief) {
+    if (contactsDto.galleryId) {
       const mediaToRemove = await this.prisma.media.findFirst({
         where: {
           contactId: contacts.id,
@@ -51,7 +54,7 @@ export class ContactService {
       })
 
       if (mediaToRemove) {
-        await this.mediaService.remove(mediaToRemove.id)
+        await this.mediaService.remove(mediaToRemove)
       }
 
       const media = await this.prisma.media.create({
@@ -60,7 +63,7 @@ export class ContactService {
         },
       })
 
-      await this.mediaService.generate(contactsDto.brief, media.id)
+      await this.mediaService.generate(contactsDto.galleryId, media.id)
     }
 
     return 'Контакты обновлены'

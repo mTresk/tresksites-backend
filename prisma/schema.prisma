@@ -12,6 +12,7 @@ model Service {
   id          Int       @id @default(autoincrement())
   title       String    @db.VarChar(255)
   description String    @db.Text
+  galleryId   String?   @map("gallery_id")
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
   media       Media[]
@@ -28,6 +29,7 @@ model Work {
   list       String    @db.Text
   content    Json?
   isFeatured Boolean   @map("is_featured")
+  galleryId  String?   @map("gallery_id")
   createdAt  DateTime? @default(now()) @map("created_at")
   updatedAt  DateTime? @updatedAt @map("updated_at")
   media      Media[]
@@ -68,6 +70,7 @@ model Contact {
   email     String?   @db.VarChar(255)
   telegram  String?   @db.VarChar(255)
   block     Json?
+  galleryId String?   @map("gallery_id") @db.VarChar(255)
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   media     Media[]

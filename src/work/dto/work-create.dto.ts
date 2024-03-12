@@ -37,5 +37,5 @@ export class WorkCreateDto {
 
   @IsString({ message: 'Поле "Изображение" должно быть строкой' })
   @IsNotEmpty({ message: 'Поле "Изображение" обязательно' })
-  featuredImage: string
+  galleryId: string
 }
