@@ -11,6 +11,7 @@ import { MediaModule } from './media/media.module'
 import { WorkModule } from './work/work.module'
 import { ContactModule } from './contact/contact.module'
 import { PriceModule } from './price/price.module'
+import { PolicyModule } from './policy/policy.module'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PriceModule } from './price/price.module'
     WorkModule,
     ContactModule,
     PriceModule,
+    PolicyModule,
   ],
   controllers: [],
   providers: [],
