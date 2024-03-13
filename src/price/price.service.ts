@@ -7,7 +7,13 @@ export class PriceService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findFirst() {
-    return this.prisma.price.findFirst({})
+    return this.prisma.price.findFirst({
+      select: {
+        title: true,
+        description: true,
+        block: true,
+      },
+    })
   }
 
   async update(priceDto: PriceDto) {

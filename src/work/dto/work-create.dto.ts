@@ -38,4 +38,10 @@ export class WorkCreateDto {
   @IsString({ message: 'Поле "Изображение" должно быть строкой' })
   @IsNotEmpty({ message: 'Поле "Изображение" обязательно' })
   galleryId: string
+
+  @IsOptional()
+  seo: {
+    title?: string
+    description?: string
+  }
 }

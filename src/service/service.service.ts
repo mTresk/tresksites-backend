@@ -23,7 +23,7 @@ export class ServiceService {
         id: item.id,
         title: item.title,
         description: item.description,
-        images: this.mediaService.prepareLinks(item.media[0], item.galleryId),
+        files: this.mediaService.prepareLinks(item.media[0], item.galleryId),
         createdAt: item.createdAt,
       }
     })

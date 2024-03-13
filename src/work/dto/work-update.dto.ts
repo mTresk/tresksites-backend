@@ -45,4 +45,10 @@ export class WorkUpdateDto {
   @IsString({ message: 'Поле "Изображение" должно быть строкой' })
   @IsOptional()
   galleryId: string
+
+  @IsOptional()
+  seo: {
+    title?: string
+    description?: string
+  }
 }

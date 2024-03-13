@@ -5,6 +5,7 @@ import { MediaService } from '../media/media.service'
 import { WorkUpdateDto } from './dto/work-update.dto'
 import { FileService } from '../file/file.service'
 import { worksFormats } from '../formats'
+import prisma from '../prisma/extentions/find-many-and-count'
 
 @Injectable()
 export class WorkService {
@@ -14,17 +15,93 @@ export class WorkService {
     private readonly fileService: FileService,
   ) {}
 
-  async findAll() {
-    return this.prisma.work.findMany({})
+  async findAll(query: any) {
+    const perPage = query.perPage
+
+    const [works, count] = await prisma.work.findManyAndCount({
+      include: {
+        media: true,
+      },
+      skip: query.page ? +query.page * perPage : 0,
+      take: perPage ? +perPage : 100,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    const data = await Promise.all(
+      works.map(async (item: any) => {
+        const media = await this.prisma.media.findFirst({
+          where: {
+            galleryId: item.galleryId,
+          },
+        })
+
+        return {
+          id: item.id,
+          name: item.name,
+          slug: item.slug,
+          label: item.label,
+          url: item.url,
+          list: item.list,
+          files: this.mediaService.prepareLinks(media, item.galleryId),
+          isFeatured: item.isFeatured,
+          createdAt: item.createdAt,
+        }
+      }),
+    )
+
+    const lastPage = Math.floor(count / perPage)
+
+    return {
+      data,
+      meta: {
+        lastPage,
+        total: count,
+      },
+    }
   }
 
-  async findOne(id: number) {
-    const data = await this.prisma.work.findUnique({
+  async findFeatured() {
+    const works: any = await this.prisma.work.findMany({
       where: {
-        id: id,
+        isFeatured: true,
       },
       include: {
         media: true,
+      },
+    })
+
+    return Promise.all(
+      works.map(async (item: any) => {
+        const media = await this.prisma.media.findFirst({
+          where: {
+            galleryId: item.galleryId,
+          },
+        })
+
+        return {
+          id: item.id,
+          name: item.name,
+          slug: item.slug,
+          label: item.label,
+          url: item.url,
+          list: item.list,
+          files: this.mediaService.prepareLinks(media, item.galleryId),
+          isFeatured: item.isFeatured,
+        }
+      }),
+    )
+  }
+
+  async findOne(slug: string) {
+    const data = await this.prisma.work.findUnique({
+      where: {
+        slug,
+      },
+      include: {
+        media: true,
+        seo: true,
       },
     })
 
@@ -33,6 +110,39 @@ export class WorkService {
         galleryId: data.galleryId,
       },
     })
+
+    const count = await prisma.work.count()
+    const skip = Math.floor(Math.random() * count)
+
+    const other = await this.prisma.work.findMany({
+      where: {
+        NOT: {
+          slug,
+        },
+      },
+      skip,
+      take: 3,
+    })
+
+    const otherWorks = await Promise.all(
+      other.map(async (item: any) => {
+        const media = await this.prisma.media.findFirst({
+          where: {
+            galleryId: item.galleryId,
+          },
+        })
+
+        return {
+          id: item.id,
+          name: item.name,
+          slug: item.slug,
+          label: item.label,
+          url: item.url,
+          list: item.list,
+          files: this.mediaService.prepareLinks(media, item.galleryId),
+        }
+      }),
+    )
 
     return {
       id: data.id,
@@ -44,6 +154,8 @@ export class WorkService {
       files: this.mediaService.prepareLinks(media, data.galleryId),
       content: await this.prepareContent(data.content, data.id),
       isFeatured: data.isFeatured,
+      seo: data.seo[0],
+      otherWorks,
     }
   }
 
@@ -69,31 +181,40 @@ export class WorkService {
 
     await this.mediaService.generate(workDto.galleryId, media.id, worksFormats)
 
+    await this.prisma.seo.create({
+      data: {
+        workId: work.id,
+        ...workDto.seo,
+      },
+    })
+
     const content: any = work.content
 
     if (content) {
       for (const item of content) {
-        const media = await this.prisma.media.create({
-          data: {
-            workId: work.id,
-          },
-        })
+        if (item.galleryId) {
+          const media = await this.prisma.media.create({
+            data: {
+              workId: work.id,
+            },
+          })
 
-        await this.mediaService.generate(
-          item.data.galleryId,
-          media.id,
-          worksFormats,
-        )
+          await this.mediaService.generate(
+            item.data.galleryId,
+            media.id,
+            worksFormats,
+          )
+        }
       }
     }
 
     return 'Работа создана'
   }
 
-  async update(id: number, workDto: WorkUpdateDto) {
-    const work = await this.prisma.work.findUnique({
+  async update(slug: string, workDto: WorkUpdateDto) {
+    const work = await this.prisma.work.findFirst({
       where: {
-        id,
+        slug,
       },
     })
 
@@ -103,7 +224,11 @@ export class WorkService {
       label: workDto.label,
       url: workDto.url,
       list: workDto.list,
-      content: await this.prepareContent(workDto.content, id, work.content),
+      content: await this.prepareContent(
+        workDto.content,
+        work.id,
+        work.content,
+      ),
       isFeatured: workDto.isFeatured,
       galleryId: workDto.galleryId ?? work.galleryId,
     }
@@ -119,7 +244,7 @@ export class WorkService {
 
       const media = await this.prisma.media.create({
         data: {
-          workId: id,
+          workId: work.id,
         },
       })
 
@@ -131,47 +256,63 @@ export class WorkService {
 
       await this.prisma.work.update({
         where: {
-          id: id,
+          id: work.id,
         },
         data,
+      })
+
+      await this.prisma.seo.updateMany({
+        where: {
+          workId: work.id,
+        },
+        data: workDto.seo,
       })
     } else {
       await this.prisma.work.update({
         where: {
-          id: id,
+          id: work.id,
         },
         data,
+      })
+
+      await this.prisma.seo.updateMany({
+        where: {
+          workId: work.id,
+        },
+        data: workDto.seo,
       })
     }
 
     return 'Работа обновлена'
   }
 
-  async remove(id: number) {
+  async remove(slug: string) {
+    const work = await this.prisma.work.findUnique({ where: { slug } })
+
     const media = await this.prisma.media.findMany({
       where: {
-        workId: id,
+        workId: work.id,
       },
     })
 
     for (const item of media) {
-      await this.fileService.deleteFile(String(item.galleryId))
+      await this.fileService.deleteFile(item.galleryId)
     }
 
     await this.prisma.media.deleteMany({
       where: {
-        workId: id,
+        workId: work.id,
       },
     })
 
-    await this.prisma.work.delete({ where: { id } })
+    await this.prisma.work.delete({ where: { slug } })
 
     return 'Работа удалена'
   }
 
   private async prepareContent(content: any, id: number, prevContent?: any) {
     return Promise.all(
-      content.map(async (item: WorkUpdateDto['content'], index) => {
+      content.map(async (item: WorkUpdateDto['content'], index: number) => {
         const data = item?.data
 
         const media = await this.prisma.media.findFirst({
@@ -180,7 +321,7 @@ export class WorkService {
           },
         })
 
-        if (media) {
+        if (media && item.data.galleryId) {
           return {
             data: {
               html: item.data.html,

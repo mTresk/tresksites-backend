@@ -4,9 +4,9 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common'
 import { WorkService } from './work.service'
 import { WorkCreateDto } from './dto'
@@ -17,13 +17,18 @@ export class WorkController {
   constructor(private readonly workService: WorkService) {}
 
   @Get()
-  findAll() {
-    return this.workService.findAll()
+  findAll(@Query() query: any) {
+    return this.workService.findAll(query)
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.workService.findOne(id)
+  @Get('featured')
+  findFeatured() {
+    return this.workService.findFeatured()
+  }
+
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.workService.findOne(slug)
   }
 
   @Post()
@@ -31,16 +36,13 @@ export class WorkController {
     return this.workService.create(workDto)
   }
 
-  @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() workDto: WorkUpdateDto,
-  ) {
-    return this.workService.update(id, workDto)
+  @Put(':slug')
+  update(@Param('slug') slug: string, @Body() workDto: WorkUpdateDto) {
+    return this.workService.update(slug, workDto)
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.workService.remove(id)
+  @Delete(':slug')
+  remove(@Param('slug') slug: string) {
+    return this.workService.remove(slug)
   }
 }
