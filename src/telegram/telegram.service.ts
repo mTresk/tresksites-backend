@@ -9,11 +9,11 @@ export class TelegramService {
   constructor(private readonly config: ConfigService) {}
 
   @OnEvent('order.received', { async: true })
-  async handleConfigGeneratedEvent(event: OrderReceivedEvent) {
-    await this.sendAdminNewUserRegistered(event)
+  async handleOrderReceivedEvent(event: OrderReceivedEvent) {
+    await this.sendOrderReceived(event)
   }
 
-  async sendAdminNewUserRegistered(payload: OrderReceivedEvent) {
+  async sendOrderReceived(payload: OrderReceivedEvent) {
     const message = `
 <b>Получен новый заказ!</b>
 
