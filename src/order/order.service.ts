@@ -3,6 +3,8 @@ import { PrismaService } from '../prisma/prisma.service'
 import { OrderDto } from './dto'
 import { ConfigService } from '@nestjs/config'
 import { FileService } from '../file/file.service'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { OrderReceivedEvent } from '../events/order-received-event'
 
 @Injectable()
 export class OrderService {
@@ -10,6 +12,7 @@ export class OrderService {
     private readonly prisma: PrismaService,
     private readonly config: ConfigService,
     private readonly fileService: FileService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async findAll() {
@@ -34,7 +37,7 @@ export class OrderService {
   }
 
   async create(orderDto: OrderDto, filename: string) {
-    await this.prisma.order.create({
+    const order = await this.prisma.order.create({
       data: {
         name: orderDto.name,
         phone: orderDto.phone,
@@ -43,6 +46,17 @@ export class OrderService {
         attachment: filename,
       },
     })
+
+    this.eventEmitter.emit(
+      'order.received',
+      new OrderReceivedEvent(
+        order.name,
+        order.phone,
+        order.email,
+        order.message,
+        order.attachment,
+      ),
+    )
 
     return 'Заказ создан'
   }

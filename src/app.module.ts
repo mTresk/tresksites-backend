@@ -14,6 +14,8 @@ import { PriceModule } from './price/price.module'
 import { PolicyModule } from './policy/policy.module'
 import { OrderModule } from './order/order.module'
 import { AuthModule } from './auth/auth.module'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { TelegramModule } from './telegram/telegram.module'
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { AuthModule } from './auth/auth.module'
       rootPath: join(__dirname, '..'),
       serveStaticOptions: { index: false },
     }),
+    EventEmitterModule.forRoot(),
     AuthModule,
     PrismaModule,
     ServiceModule,
@@ -37,6 +40,7 @@ import { AuthModule } from './auth/auth.module'
     PriceModule,
     PolicyModule,
     OrderModule,
+    TelegramModule,
   ],
   controllers: [],
   providers: [],
