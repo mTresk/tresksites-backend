@@ -9,8 +9,7 @@ import {
   Put,
 } from '@nestjs/common'
 import { ServiceService } from './service.service'
-import { ServiceCreateDto } from './dto'
-import { ServiceUpdateDto } from './dto/service-update.dto'
+import { ServiceCreateDto, ServiceUpdateDto } from './dto'
 
 @Controller('services')
 export class ServiceController {

@@ -52,6 +52,24 @@ export class FileService {
     }
   }
 
+  async saveAttachment(file: Express.Multer.File) {
+    const fileName = `${crypto.randomUUID()}${path.extname(file.originalname)}`
+
+    const destinationFolder = `${this.config.get('NODE_PATH')}storage/attachments`
+
+    if (!fs.existsSync(destinationFolder)) {
+      fs.mkdirSync(destinationFolder, {
+        recursive: true,
+      })
+    }
+
+    fs.writeFile(`${destinationFolder}/${fileName}`, file.buffer, (error) => {
+      if (error) console.log(error)
+    })
+
+    return fileName
+  }
+
   async deleteTemporaryFile(folder: string) {
     if (folder) {
       fs.rm(

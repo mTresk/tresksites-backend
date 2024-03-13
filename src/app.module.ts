@@ -12,6 +12,7 @@ import { WorkModule } from './work/work.module'
 import { ContactModule } from './contact/contact.module'
 import { PriceModule } from './price/price.module'
 import { PolicyModule } from './policy/policy.module'
+import { OrderModule } from './order/order.module'
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PolicyModule } from './policy/policy.module'
     ContactModule,
     PriceModule,
     PolicyModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],

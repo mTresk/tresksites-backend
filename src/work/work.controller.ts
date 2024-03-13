@@ -9,8 +9,7 @@ import {
   Query,
 } from '@nestjs/common'
 import { WorkService } from './work.service'
-import { WorkCreateDto } from './dto'
-import { WorkUpdateDto } from './dto/work-update.dto'
+import { WorkCreateDto, WorkUpdateDto } from './dto'
 
 @Controller('works')
 export class WorkController {
