@@ -42,7 +42,8 @@ class WorkResource extends Resource
                             SpatieMediaLibraryFileUpload::make('featured')
                                 ->collection('featured')
                                 ->label('Основное изображение')
-                                ->required(),
+                                ->required()
+                                ->downloadable(),
                             TextInput::make('name')
                                 ->required()
                                 ->maxLength(255)
@@ -87,6 +88,7 @@ class WorkResource extends Resource
                                         ->collection('works')
                                         ->multiple()
                                         ->required()
+                                        ->downloadable()
                                         ->customProperties(fn(Get $get): array => [
                                             'gallery_id' => $get('gallery_id'),
                                         ])
