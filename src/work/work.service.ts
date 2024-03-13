@@ -4,8 +4,8 @@ import { WorkCreateDto } from './dto'
 import { MediaService } from '../media/media.service'
 import { WorkUpdateDto } from './dto/work-update.dto'
 import { FileService } from '../file/file.service'
-import { worksFormats } from '../formats'
 import prisma from '../prisma/extentions/find-many-and-count'
+import { worksFormats } from '../formats'
 
 @Injectable()
 export class WorkService {

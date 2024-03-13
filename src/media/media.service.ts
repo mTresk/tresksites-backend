@@ -47,6 +47,10 @@ export class MediaService {
       imageX2: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageX2}`,
       imageWebp: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageWebp}`,
       imageWebpX2: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageWebpX2}`,
+      imageSm: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageSm}`,
+      imageSmX2: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageSmX2}`,
+      imageWebpSm: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageWebpSm}`,
+      imageWebpSmX2: `${this.config.get('APP_URL')}/storage/${galleryId}/${links.imageWebpSmX2}`,
     }
   }
 }

@@ -1,5 +1,29 @@
 export const worksFormats = [
   {
+    name: 'imageSm',
+    width: 400,
+    format: 'jpg',
+    fit: 'contain',
+  },
+  {
+    name: 'imageWebpSm',
+    width: 400,
+    format: 'webp',
+    fit: 'contain',
+  },
+  {
+    name: 'imageSmX2',
+    width: 800,
+    format: 'jpg',
+    fit: 'contain',
+  },
+  {
+    name: 'imageWebpSmX2',
+    width: 800,
+    format: 'webp',
+    fit: 'contain',
+  },
+  {
     name: 'image',
     width: 1058,
     format: 'jpg',
