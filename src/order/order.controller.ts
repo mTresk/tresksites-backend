@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { OrderService } from './order.service'
@@ -16,6 +17,7 @@ import { OrderDto } from './dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { Express } from 'express'
 import { FileService } from '../file/file.service'
+import { JwtGuard, RolesGuard } from '../auth/guard'
 
 @Controller('orders')
 export class OrderController {
@@ -24,11 +26,13 @@ export class OrderController {
     private readonly fileService: FileService,
   ) {}
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Get()
   findAll() {
     return this.orderService.findAll()
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.orderService.findOne(id)
@@ -59,6 +63,7 @@ export class OrderController {
     return this.orderService.create(orderDto, fileName)
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.orderService.remove(id)

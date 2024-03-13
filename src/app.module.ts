@@ -13,6 +13,7 @@ import { ContactModule } from './contact/contact.module'
 import { PriceModule } from './price/price.module'
 import { PolicyModule } from './policy/policy.module'
 import { OrderModule } from './order/order.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { OrderModule } from './order/order.module'
       rootPath: join(__dirname, '..'),
       serveStaticOptions: { index: false },
     }),
+    AuthModule,
     PrismaModule,
     ServiceModule,
     FileModule,

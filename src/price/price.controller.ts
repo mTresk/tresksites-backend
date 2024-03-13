@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Put } from '@nestjs/common'
+import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common'
 import { PriceService } from './price.service'
 import { PriceDto } from './dto'
+import { JwtGuard, RolesGuard } from '../auth/guard'
 
 @Controller('prices')
 export class PriceController {
@@ -11,6 +12,7 @@ export class PriceController {
     return this.priceService.findFirst()
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Put('update')
   update(@Body() priceDto: PriceDto) {
     return this.priceService.update(priceDto)

@@ -8,6 +8,6 @@ export class ServiceCreateDto {
   @IsNotEmpty({ message: 'Поле "Заголовок" обязательно' })
   title: string
 
-  @IsNotEmpty({ message: 'Поле "описание" обязательно' })
+  @IsNotEmpty({ message: 'Поле "Описание" обязательно' })
   description: string
 }

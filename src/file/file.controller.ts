@@ -6,12 +6,15 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { FileService } from './file.service'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { Express } from 'express'
+import { JwtGuard, RolesGuard } from '../auth/guard'
 
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('files')
 export class FileController {
   constructor(private readonly fileService: FileService) {}

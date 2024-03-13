@@ -3,6 +3,7 @@ import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { useContainer } from 'class-validator'
 import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common'
+import * as cookieParser from 'cookie-parser'
 
 const config = new ConfigService()
 
@@ -27,6 +28,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api', {
     exclude: ['login', 'logout', 'register', 'user', 'storage'],
   })
+  app.use(cookieParser())
   app.enableCors({
     origin: config.get('FRONTEND_URLS').split(','),
     credentials: true,

@@ -96,6 +96,18 @@ model Order {
   @@map("orders")
 }
 
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  isAdmin   Boolean   @default(false) @map("is_admin")
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
 model Media {
   id        Int       @id @default(autoincrement())
   links     Json?
