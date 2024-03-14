@@ -3,6 +3,8 @@
 /node_modules
 /storage/*
 .env
+.env.backup
+.env.docker
 
 # Logs
 logs
