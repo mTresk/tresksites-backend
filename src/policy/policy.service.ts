@@ -11,14 +11,20 @@ export class PolicyService {
   }
 
   async update(policyDto: PolicyDto) {
-    const policy = await this.findFirst()
+    const policy = await this.prisma.policy.findFirst()
 
-    await this.prisma.policy.update({
-      where: {
-        id: policy.id,
-      },
-      data: policyDto,
-    })
+    if (!policy) {
+      await this.prisma.policy.create({
+        data: policyDto,
+      })
+    } else {
+      await this.prisma.policy.update({
+        where: {
+          id: policy.id,
+        },
+        data: policyDto,
+      })
+    }
 
     return 'Данные обновлены'
   }
