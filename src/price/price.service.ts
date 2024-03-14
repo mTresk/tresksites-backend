@@ -19,12 +19,18 @@ export class PriceService {
   async update(priceDto: PriceDto) {
     const price = await this.prisma.price.findFirst()
 
-    await this.prisma.price.update({
-      where: {
-        id: price.id,
-      },
-      data: priceDto,
-    })
+    if (!price) {
+      await this.prisma.price.create({
+        data: priceDto,
+      })
+    } else {
+      await this.prisma.price.update({
+        where: {
+          id: price.id,
+        },
+        data: priceDto,
+      })
+    }
 
     return 'Цены обновлены'
   }

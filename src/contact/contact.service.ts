@@ -17,53 +17,61 @@ export class ContactService {
       },
     })
 
-    return {
-      name: data.name,
-      inn: data.inn,
-      email: data.email,
-      telegram: data.telegram,
-      block: data.block,
-      files: data.media[0]
-        ? this.mediaService.prepareLinks(data.media[0], data.galleryId)
-        : {},
+    if (data) {
+      return {
+        name: data.name,
+        inn: data.inn,
+        email: data.email,
+        telegram: data.telegram,
+        block: data.block,
+        files: data.media[0]
+          ? this.mediaService.prepareLinks(data.media[0], data.galleryId)
+          : {},
+      }
     }
   }
 
   async update(contactsDto: ContactsDto) {
     const contacts = await this.prisma.contact.findFirst()
 
-    await this.prisma.contact.update({
-      where: {
-        id: contacts.id,
-      },
-      data: {
-        name: contactsDto.name,
-        inn: contactsDto.inn,
-        email: contactsDto.email,
-        telegram: contactsDto.telegram,
-        block: contactsDto.block,
-        galleryId: contactsDto.galleryId,
-      },
-    })
-
-    if (contactsDto.galleryId) {
-      const mediaToRemove = await this.prisma.media.findFirst({
+    if (!contacts) {
+      await this.prisma.contact.create({
+        data: contactsDto,
+      })
+    } else {
+      await this.prisma.contact.update({
         where: {
-          contactId: contacts.id,
+          id: contacts.id,
         },
-      })
-
-      if (mediaToRemove) {
-        await this.mediaService.remove(mediaToRemove)
-      }
-
-      const media = await this.prisma.media.create({
         data: {
-          contactId: contacts.id,
+          name: contactsDto.name,
+          inn: contactsDto.inn,
+          email: contactsDto.email,
+          telegram: contactsDto.telegram,
+          block: contactsDto.block,
+          galleryId: contactsDto.galleryId,
         },
       })
 
-      await this.mediaService.generate(contactsDto.galleryId, media.id)
+      if (contactsDto.galleryId) {
+        const mediaToRemove = await this.prisma.media.findFirst({
+          where: {
+            contactId: contacts.id,
+          },
+        })
+
+        if (mediaToRemove) {
+          await this.mediaService.remove(mediaToRemove)
+        }
+
+        const media = await this.prisma.media.create({
+          data: {
+            contactId: contacts.id,
+          },
+        })
+
+        await this.mediaService.generate(contactsDto.galleryId, media.id)
+      }
     }
 
     return 'Контакты обновлены'
