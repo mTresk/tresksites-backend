@@ -5,8 +5,6 @@ import { ServiceModule } from './service/service.module'
 import { MulterModule } from '@nestjs/platform-express'
 import { memoryStorage } from 'multer'
 import { FileModule } from './file/file.module'
-import { ServeStaticModule } from '@nestjs/serve-static'
-import { join } from 'path'
 import { MediaModule } from './media/media.module'
 import { WorkModule } from './work/work.module'
 import { ContactModule } from './contact/contact.module'
@@ -25,10 +23,6 @@ import { MailModule } from './mail/mail.module'
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..'),
-      serveStaticOptions: { index: false },
     }),
     EventEmitterModule.forRoot(),
     AuthModule,

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { useContainer } from 'class-validator'
 import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common'
 import * as cookieParser from 'cookie-parser'
+import * as express from 'express'
 
 const config = new ConfigService()
 
@@ -33,6 +34,7 @@ async function bootstrap() {
     origin: config.get('FRONTEND_URLS').split(','),
     credentials: true,
   })
+  app.use('/storage', express.static(config.get('NODE_PATH') + 'storage'))
   await app.listen(8000)
 }
 
