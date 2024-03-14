@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { TelegramModule } from './telegram/telegram.module'
 import { MailModule } from './mail/mail.module'
+import { ChartModule } from './chart/chart.module'
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { MailModule } from './mail/mail.module'
     OrderModule,
     TelegramModule,
     MailModule,
+    ChartModule,
   ],
   controllers: [],
   providers: [],
