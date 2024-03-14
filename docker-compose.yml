@@ -8,11 +8,11 @@ services:
       context: .
       target: ${APP_ENV}
     labels:
-      - "traefik.http.routers.app.rule=Host(`${APP_BASE_URL}`)"
+      - "traefik.http.routers.tresksitesapp.rule=Host(`${APP_BASE_URL}`)"
       - "traefik.port=80"
       - "traefik.docker.network=web"
-      - "traefik.http.routers.app.entrypoints=websecure"
-      - "traefik.http.routers.app.tls.certresolver=myresolver"
+      - "traefik.http.routers.tresksitesapp.entrypoints=websecure"
+      - "traefik.http.routers.tresksitesapp.tls.certresolver=myresolver"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -23,7 +23,7 @@ services:
     networks:
       - web
       - internal
-    container_name: api_app
+    container_name: tresksites_api_app
     restart: always
   # Database
   database:
@@ -36,8 +36,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
-      - "3306:3306"
-    container_name: api_db
+      - "3307:3306"
+    container_name: tresksites_api_db
     restart: always
     networks:
       - internal
@@ -52,11 +52,11 @@ services:
     depends_on:
       - database
     ports:
-      - "8899:80"
+      - "8877:80"
     networks:
       - web
       - internal
-    container_name: api_pma
+    container_name: tresksites_api_pma
     restart: always
 
 networks:
