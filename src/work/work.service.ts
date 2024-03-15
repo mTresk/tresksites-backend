@@ -250,15 +250,6 @@ export class WorkService {
     return 'Работа удалена'
   }
 
-  async getRoutes() {
-    return this.prisma.work.findMany({
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    })
-  }
-
   private async prepareData(model: any) {
     return Promise.all(
       model.map(async (item: any) => {

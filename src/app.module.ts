@@ -16,6 +16,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter'
 import { TelegramModule } from './telegram/telegram.module'
 import { MailModule } from './mail/mail.module'
 import { ChartModule } from './chart/chart.module'
+import { SitemapModule } from './sitemap/sitemap.module'
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ChartModule } from './chart/chart.module'
     TelegramModule,
     MailModule,
     ChartModule,
+    SitemapModule,
   ],
   controllers: [],
   providers: [],

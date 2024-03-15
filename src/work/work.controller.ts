@@ -31,11 +31,6 @@ export class WorkController {
     return this.workService.findFeatured()
   }
 
-  @Get('routes')
-  getRoutes() {
-    return this.workService.getRoutes()
-  }
-
   @Get(':slug')
   findOne(@Param('slug') slug: string) {
     return this.workService.findOne(slug)
