@@ -4,14 +4,13 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common'
 import { WorkService } from './work.service'
-import { WorkCreateDto, WorkUpdateDto } from './dto'
+import { WorkCreateDto, WorkQueryDto, WorkUpdateDto } from './dto'
 import { JwtGuard, RolesGuard } from '../auth/guard'
 
 @Controller('works')
@@ -19,10 +18,7 @@ export class WorkController {
   constructor(private readonly workService: WorkService) {}
 
   @Get()
-  findAll(
-    @Query('page', ParseIntPipe) page: number,
-    @Query('perPage', ParseIntPipe) perPage: number,
-  ) {
+  findAll(@Query() { page, perPage }: WorkQueryDto) {
     return this.workService.findAll(page, perPage)
   }
 
