@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -18,8 +19,11 @@ export class WorkController {
   constructor(private readonly workService: WorkService) {}
 
   @Get()
-  findAll(@Query() query: any) {
-    return this.workService.findAll(query)
+  findAll(
+    @Query('page', ParseIntPipe) page: number,
+    @Query('perPage', ParseIntPipe) perPage: number,
+  ) {
+    return this.workService.findAll(page, perPage)
   }
 
   @Get('featured')

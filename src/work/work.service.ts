@@ -14,41 +14,19 @@ export class WorkService {
     private readonly fileService: FileService,
   ) {}
 
-  async findAll(query: any) {
-    const perPage = query.perPage
-
+  async findAll(page: number, perPage: number) {
     const [works, count] = await prisma.work.findManyAndCount({
       include: {
         media: true,
       },
-      skip: query.page ? +query.page * perPage : 0,
-      take: perPage ? +perPage : 100,
+      skip: page ? page * perPage : 0,
+      take: perPage ? perPage : 100,
       orderBy: {
         createdAt: 'desc',
       },
     })
 
-    const data = await Promise.all(
-      works.map(async (item: any) => {
-        const media = await this.prisma.media.findFirst({
-          where: {
-            galleryId: item.galleryId,
-          },
-        })
-
-        return {
-          id: item.id,
-          name: item.name,
-          slug: item.slug,
-          label: item.label,
-          url: item.url,
-          list: item.list,
-          files: this.mediaService.prepareLinks(media, item.galleryId),
-          isFeatured: item.isFeatured,
-          createdAt: item.createdAt,
-        }
-      }),
-    )
+    const data = await this.prepareData(works)
 
     const lastPage = Math.floor(count / perPage)
 
@@ -71,26 +49,7 @@ export class WorkService {
       },
     })
 
-    return Promise.all(
-      works.map(async (item: any) => {
-        const media = await this.prisma.media.findFirst({
-          where: {
-            galleryId: item.galleryId,
-          },
-        })
-
-        return {
-          id: item.id,
-          name: item.name,
-          slug: item.slug,
-          label: item.label,
-          url: item.url,
-          list: item.list,
-          files: this.mediaService.prepareLinks(media, item.galleryId),
-          isFeatured: item.isFeatured,
-        }
-      }),
-    )
+    return this.prepareData(works)
   }
 
   async findOne(slug: string) {
@@ -123,25 +82,7 @@ export class WorkService {
       take: 3,
     })
 
-    const otherWorks = await Promise.all(
-      other.map(async (item: any) => {
-        const media = await this.prisma.media.findFirst({
-          where: {
-            galleryId: item.galleryId,
-          },
-        })
-
-        return {
-          id: item.id,
-          name: item.name,
-          slug: item.slug,
-          label: item.label,
-          url: item.url,
-          list: item.list,
-          files: this.mediaService.prepareLinks(media, item.galleryId),
-        }
-      }),
-    )
+    const otherWorks = await this.prepareData(other)
 
     return {
       id: data.id,
@@ -316,6 +257,29 @@ export class WorkService {
         updatedAt: true,
       },
     })
+  }
+
+  private async prepareData(model: any) {
+    return Promise.all(
+      model.map(async (item: any) => {
+        const media = await this.prisma.media.findFirst({
+          where: {
+            galleryId: item.galleryId,
+          },
+        })
+
+        return {
+          id: item.id,
+          name: item.name,
+          slug: item.slug,
+          label: item.label,
+          url: item.url,
+          list: item.list,
+          files: this.mediaService.prepareLinks(media, item.galleryId),
+          isFeatured: item.isFeatured,
+        }
+      }),
+    )
   }
 
   private async prepareContent(content: any, id: number, prevContent?: any) {
