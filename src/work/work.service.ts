@@ -26,7 +26,7 @@ export class WorkService {
       },
     })
 
-    const data = await this.prepareData(works)
+    const data = await this.prepareData(works as unknown as WorkUpdateDto[])
 
     const lastPage = Math.floor(count / perPage)
 
@@ -82,7 +82,9 @@ export class WorkService {
       take: 3,
     })
 
-    const otherWorks = await this.prepareData(other)
+    const otherWorks = await this.prepareData(
+      other as unknown as WorkUpdateDto[],
+    )
 
     return {
       id: data.id,
@@ -92,7 +94,10 @@ export class WorkService {
       url: data.url,
       list: data.list,
       files: this.mediaService.prepareLinks(media, data.galleryId),
-      content: await this.prepareContent(data.content, data.id),
+      content: await this.prepareContent(
+        data.content as WorkUpdateDto['content'],
+        data.id,
+      ),
       isFeatured: data.isFeatured,
       seo: data.seo[0],
       otherWorks,
@@ -128,11 +133,11 @@ export class WorkService {
       },
     })
 
-    const content: any = work.content
+    const content = work.content as WorkCreateDto['content']
 
     if (content) {
       for (const item of content) {
-        if (item.galleryId) {
+        if (item.data.galleryId) {
           const media = await this.prisma.media.create({
             data: {
               workId: work.id,
@@ -167,7 +172,7 @@ export class WorkService {
       content: await this.prepareContent(
         workDto.content,
         work.id,
-        work.content,
+        work.content as WorkUpdateDto['content'],
       ),
       isFeatured: workDto.isFeatured,
       galleryId: workDto.galleryId ?? work.galleryId,
@@ -250,9 +255,9 @@ export class WorkService {
     return 'Работа удалена'
   }
 
-  private async prepareData(model: any) {
+  private async prepareData(works: WorkUpdateDto[]) {
     return Promise.all(
-      model.map(async (item: any) => {
+      works.map(async (item) => {
         const media = await this.prisma.media.findFirst({
           where: {
             galleryId: item.galleryId,
@@ -273,9 +278,13 @@ export class WorkService {
     )
   }
 
-  private async prepareContent(content: any, id: number, prevContent?: any) {
+  private async prepareContent(
+    content: WorkUpdateDto['content'],
+    id: number,
+    prevContent?: WorkUpdateDto['content'],
+  ) {
     return Promise.all(
-      content.map(async (item: WorkUpdateDto['content'], index: number) => {
+      content.map(async (item, index: number) => {
         const data = item?.data
 
         const media = await this.prisma.media.findFirst({
@@ -294,8 +303,7 @@ export class WorkService {
           }
         } else if (!media && item.data.galleryId) {
           if (prevContent) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            for (const content of prevContent) {
+            prevContent.map(async () => {
               if (prevContent[index]?.data?.galleryId) {
                 await this.fileService.deleteFile(
                   prevContent[index].data.galleryId,
@@ -307,7 +315,7 @@ export class WorkService {
                   },
                 })
               }
-            }
+            })
           }
 
           const media = await this.prisma.media.create({

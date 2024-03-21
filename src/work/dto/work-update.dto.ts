@@ -7,6 +7,9 @@ import {
 } from 'class-validator'
 
 export class WorkUpdateDto {
+  @IsOptional()
+  id?: number
+
   @IsNotEmpty({ message: 'Поле "Название" обязательно' })
   @IsString({ message: 'Поле "Название" должно быть строкой' })
   name: string
@@ -28,15 +31,17 @@ export class WorkUpdateDto {
   list: string
 
   @IsArray()
-  content?: {
-    data?: {
-      html?: string
-      images?: {
-        image: string
+  content?: [
+    {
+      data?: {
+        html?: string
+        images?: {
+          image: string
+        }
+        galleryId?: string
       }
-      galleryId?: string
-    }
-  }
+    },
+  ]
 
   @IsBoolean({ message: 'Поле "Содержимое" должно быть булевым значением' })
   @IsNotEmpty({ message: 'Поле "В подборке" обязательно' })
@@ -47,7 +52,7 @@ export class WorkUpdateDto {
   galleryId: string
 
   @IsOptional()
-  seo: {
+  seo?: {
     title?: string
     description?: string
   }

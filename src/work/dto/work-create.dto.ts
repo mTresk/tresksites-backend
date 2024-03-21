@@ -5,7 +5,6 @@ import {
   IsString,
   IsArray,
 } from 'class-validator'
-import { Prisma } from '@prisma/client'
 
 export class WorkCreateDto {
   @IsNotEmpty({ message: 'Поле "Название" обязательно' })
@@ -29,7 +28,17 @@ export class WorkCreateDto {
   list: string
 
   @IsArray()
-  content?: Prisma.JsonArray
+  content?: [
+    {
+      data?: {
+        html?: string
+        images?: {
+          image: string
+        }
+        galleryId?: string
+      }
+    },
+  ]
 
   @IsBoolean({ message: 'Поле "Содержимое" должно быть булевым значением' })
   @IsNotEmpty({ message: 'Поле "В подборке" обязательно' })
