@@ -5,16 +5,16 @@ import { JwtGuard, RolesGuard } from '../auth/guard'
 
 @Controller('policy')
 export class PolicyController {
-  constructor(private readonly policyService: PolicyService) {}
+	constructor(private readonly policyService: PolicyService) {}
 
-  @Get()
-  findFirst() {
-    return this.policyService.findFirst()
-  }
+	@Get()
+	findFirst() {
+		return this.policyService.findFirst()
+	}
 
-  @UseGuards(JwtGuard, RolesGuard)
-  @Put('update')
-  update(@Body() policyDto: PolicyDto) {
-    return this.policyService.update(policyDto)
-  }
+	@UseGuards(JwtGuard, RolesGuard)
+	@Put('update')
+	update(@Body() policyDto: PolicyDto) {
+		return this.policyService.update(policyDto)
+	}
 }

@@ -5,75 +5,81 @@ import { MediaService } from '../media/media.service'
 
 @Injectable()
 export class ContactService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly mediaService: MediaService,
-  ) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly mediaService: MediaService,
+	) {}
 
-  async findFirst() {
-    const data = await this.prisma.contact.findFirst({
-      include: {
-        media: true,
-      },
-    })
+	async findFirst() {
+		const data = await this.prisma.contact.findFirst({
+			include: {
+				media: true,
+			},
+		})
 
-    if (data) {
-      return {
-        name: data.name,
-        inn: data.inn,
-        email: data.email,
-        telegram: data.telegram,
-        block: data.block,
-        files: data.media[0]
-          ? this.mediaService.prepareLinks(data.media[0], data.galleryId)
-          : {},
-      }
-    }
-  }
+		if (data) {
+			return {
+				name: data.name,
+				inn: data.inn,
+				email: data.email,
+				telegram: data.telegram,
+				block: data.block,
+				files: data.media[0]
+					? this.mediaService.prepareLinks(
+							data.media[0],
+							data.galleryId,
+						)
+					: {},
+			}
+		}
+	}
 
-  async update(contactsDto: ContactsDto) {
-    const contacts = await this.prisma.contact.findFirst()
+	async update(contactsDto: ContactsDto) {
+		const contacts = await this.prisma.contact.findFirst()
 
-    if (!contacts) {
-      await this.prisma.contact.create({
-        data: contactsDto,
-      })
-    } else {
-      await this.prisma.contact.update({
-        where: {
-          id: contacts.id,
-        },
-        data: {
-          name: contactsDto.name,
-          inn: contactsDto.inn,
-          email: contactsDto.email,
-          telegram: contactsDto.telegram,
-          block: contactsDto.block,
-          galleryId: contactsDto.galleryId,
-        },
-      })
+		if (!contacts) {
+			await this.prisma.contact.create({
+				data: contactsDto,
+			})
+		} else {
+			await this.prisma.contact.update({
+				where: {
+					id: contacts.id,
+				},
+				data: {
+					name: contactsDto.name,
+					inn: contactsDto.inn,
+					email: contactsDto.email,
+					telegram: contactsDto.telegram,
+					block: contactsDto.block,
+					galleryId: contactsDto.galleryId,
+				},
+			})
 
-      if (contactsDto.galleryId) {
-        const mediaToRemove = await this.prisma.media.findFirst({
-          where: {
-            contactId: contacts.id,
-          },
-        })
+			if (contactsDto.galleryId) {
+				const mediaToRemove = await this.prisma.media.findFirst({
+					where: {
+						contactId: contacts.id,
+					},
+				})
 
-        if (mediaToRemove) {
-          await this.mediaService.remove(mediaToRemove)
-        }
+				if (mediaToRemove) {
+					await this.mediaService.remove(mediaToRemove)
+				}
 
-        const media = await this.prisma.media.create({
-          data: {
-            contactId: contacts.id,
-          },
-        })
+				const media = await this.prisma.media.create({
+					data: {
+						contactId: contacts.id,
+					},
+				})
 
-        await this.mediaService.generate(contactsDto.galleryId, media.id)
-      }
-    }
+				await this.mediaService.generate(
+					contactsDto.galleryId,
+					media.id,
+				)
+			}
+		}
 
-    return 'Контакты обновлены'
-  }
+		return 'Контакты обновлены'
+	}
 }

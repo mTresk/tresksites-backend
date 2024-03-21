@@ -3,7 +3,7 @@ import { PriceService } from './price.service'
 import { PriceController } from './price.controller'
 
 @Module({
-  controllers: [PriceController],
-  providers: [PriceService],
+	controllers: [PriceController],
+	providers: [PriceService],
 })
 export class PriceModule {}

@@ -6,20 +6,20 @@ import { JwtStrategy } from './strategy'
 import { ConfigService } from '@nestjs/config'
 
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      useFactory: (config: ConfigService) => {
-        return {
-          secret: config.get('JWT_SECRET_KEY'),
-          signOptions: {
-            expiresIn: config.get('JWT_EXPIRATION_TIME'),
-          },
-        }
-      },
-      inject: [ConfigService],
-    }),
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+	imports: [
+		JwtModule.registerAsync({
+			useFactory: (config: ConfigService) => {
+				return {
+					secret: config.get('JWT_SECRET_KEY'),
+					signOptions: {
+						expiresIn: config.get('JWT_EXPIRATION_TIME'),
+					},
+				}
+			},
+			inject: [ConfigService],
+		}),
+	],
+	controllers: [AuthController],
+	providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

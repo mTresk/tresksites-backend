@@ -4,28 +4,28 @@ import { PolicyDto } from './dto'
 
 @Injectable()
 export class PolicyService {
-  constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-  async findFirst() {
-    return this.prisma.policy.findFirst()
-  }
+	async findFirst() {
+		return this.prisma.policy.findFirst()
+	}
 
-  async update(policyDto: PolicyDto) {
-    const policy = await this.prisma.policy.findFirst()
+	async update(policyDto: PolicyDto) {
+		const policy = await this.prisma.policy.findFirst()
 
-    if (!policy) {
-      await this.prisma.policy.create({
-        data: policyDto,
-      })
-    } else {
-      await this.prisma.policy.update({
-        where: {
-          id: policy.id,
-        },
-        data: policyDto,
-      })
-    }
+		if (!policy) {
+			await this.prisma.policy.create({
+				data: policyDto,
+			})
+		} else {
+			await this.prisma.policy.update({
+				where: {
+					id: policy.id,
+				},
+				data: policyDto,
+			})
+		}
 
-    return 'Данные обновлены'
-  }
+		return 'Данные обновлены'
+	}
 }

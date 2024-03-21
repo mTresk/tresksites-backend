@@ -1,13 +1,13 @@
 import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Query,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Post,
+	Query,
+	UploadedFile,
+	UseGuards,
+	UseInterceptors,
 } from '@nestjs/common'
 import { FileService } from './file.service'
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -17,21 +17,21 @@ import { JwtGuard, RolesGuard } from '../auth/guard'
 @UseGuards(JwtGuard, RolesGuard)
 @Controller('files')
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+	constructor(private readonly fileService: FileService) {}
 
-  @Get()
-  getFile(@Query('url') url: string) {
-    return this.fileService.getFile(url)
-  }
+	@Get()
+	getFile(@Query('url') url: string) {
+		return this.fileService.getFile(url)
+	}
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadTemporaryFile(@UploadedFile() file: Express.Multer.File) {
-    return this.fileService.uploadTemporaryFile(file)
-  }
+	@Post('upload')
+	@UseInterceptors(FileInterceptor('file'))
+	uploadTemporaryFile(@UploadedFile() file: Express.Multer.File) {
+		return this.fileService.uploadTemporaryFile(file)
+	}
 
-  @Delete('upload/:folder')
-  deleteTemporaryFile(@Param('folder') folder: string) {
-    return this.fileService.deleteTemporaryFile(folder)
-  }
+	@Delete('upload/:folder')
+	deleteTemporaryFile(@Param('folder') folder: string) {
+		return this.fileService.deleteTemporaryFile(folder)
+	}
 }

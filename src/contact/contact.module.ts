@@ -5,7 +5,7 @@ import { MediaService } from '../media/media.service'
 import { FileService } from '../file/file.service'
 
 @Module({
-  controllers: [ContactController],
-  providers: [ContactService, FileService, MediaService],
+	controllers: [ContactController],
+	providers: [ContactService, FileService, MediaService],
 })
 export class ContactModule {}

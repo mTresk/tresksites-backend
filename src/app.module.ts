@@ -19,30 +19,30 @@ import { ChartModule } from './chart/chart.module'
 import { SitemapModule } from './sitemap/sitemap.module'
 
 @Module({
-  imports: [
-    MulterModule.register({
-      storage: memoryStorage(),
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    EventEmitterModule.forRoot(),
-    AuthModule,
-    PrismaModule,
-    ServiceModule,
-    FileModule,
-    MediaModule,
-    WorkModule,
-    ContactModule,
-    PriceModule,
-    PolicyModule,
-    OrderModule,
-    TelegramModule,
-    MailModule,
-    ChartModule,
-    SitemapModule,
-  ],
-  controllers: [],
-  providers: [],
+	imports: [
+		MulterModule.register({
+			storage: memoryStorage(),
+		}),
+		ConfigModule.forRoot({
+			isGlobal: true,
+		}),
+		EventEmitterModule.forRoot(),
+		AuthModule,
+		PrismaModule,
+		ServiceModule,
+		FileModule,
+		MediaModule,
+		WorkModule,
+		ContactModule,
+		PriceModule,
+		PolicyModule,
+		OrderModule,
+		TelegramModule,
+		MailModule,
+		ChartModule,
+		SitemapModule,
+	],
+	controllers: [],
+	providers: [],
 })
 export class AppModule {}

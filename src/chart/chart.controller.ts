@@ -5,10 +5,10 @@ import { JwtGuard, RolesGuard } from '../auth/guard'
 @UseGuards(JwtGuard, RolesGuard)
 @Controller('chart')
 export class ChartController {
-  constructor(private readonly chartService: ChartService) {}
+	constructor(private readonly chartService: ChartService) {}
 
-  @Get('stats')
-  stats() {
-    return this.chartService.getStats()
-  }
+	@Get('stats')
+	stats() {
+		return this.chartService.getStats()
+	}
 }

@@ -3,7 +3,7 @@ import { SitemapService } from './sitemap.service'
 import { SitemapController } from './sitemap.controller'
 
 @Module({
-  controllers: [SitemapController],
-  providers: [SitemapService],
+	controllers: [SitemapController],
+	providers: [SitemapService],
 })
 export class SitemapModule {}

@@ -10,168 +10,179 @@ import * as sharp from 'sharp'
 
 @Injectable()
 export class FileService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly config: ConfigService,
-  ) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly config: ConfigService,
+	) {}
 
-  async getFile(url: string) {
-    const file = createReadStream(
-      join(this.config.get('NODE_PATH') + 'storage/', url),
-    )
+	async getFile(url: string) {
+		const file = createReadStream(
+			join(this.config.get('NODE_PATH') + 'storage/', url),
+		)
 
-    return new StreamableFile(file)
-  }
+		return new StreamableFile(file)
+	}
 
-  async uploadTemporaryFile(file: Express.Multer.File) {
-    if (file) {
-      const fileName = file.originalname
+	async uploadTemporaryFile(file: Express.Multer.File) {
+		if (file) {
+			const fileName = file.originalname
 
-      const folder = `${Math.floor(Math.random() * Date.now()).toString(36)}${Math.floor(Math.random() * Date.now()).toString(36)}`
+			const folder = `${Math.floor(Math.random() * Date.now()).toString(36)}${Math.floor(Math.random() * Date.now()).toString(36)}`
 
-      const destinationFolder = `${this.config.get('NODE_PATH')}storage/tmp/${folder}`
+			const destinationFolder = `${this.config.get('NODE_PATH')}storage/tmp/${folder}`
 
-      if (!fs.existsSync(destinationFolder)) {
-        fs.mkdirSync(destinationFolder, {
-          recursive: true,
-        })
-      }
+			if (!fs.existsSync(destinationFolder)) {
+				fs.mkdirSync(destinationFolder, {
+					recursive: true,
+				})
+			}
 
-      fs.writeFile(`${destinationFolder}/${fileName}`, file.buffer, (error) => {
-        if (error) console.log(error)
-      })
+			fs.writeFile(
+				`${destinationFolder}/${fileName}`,
+				file.buffer,
+				(error) => {
+					if (error) console.log(error)
+				},
+			)
 
-      await this.prisma.temporaryFile.create({
-        data: {
-          folder: folder,
-          file: fileName,
-        },
-      })
+			await this.prisma.temporaryFile.create({
+				data: {
+					folder: folder,
+					file: fileName,
+				},
+			})
 
-      return folder
-    }
-  }
+			return folder
+		}
+	}
 
-  async saveAttachment(file: Express.Multer.File) {
-    const fileName = `${crypto.randomUUID()}${path.extname(file.originalname)}`
+	async saveAttachment(file: Express.Multer.File) {
+		const fileName = `${crypto.randomUUID()}${path.extname(file.originalname)}`
 
-    const destinationFolder = `${this.config.get('NODE_PATH')}storage/attachments`
+		const destinationFolder = `${this.config.get('NODE_PATH')}storage/attachments`
 
-    if (!fs.existsSync(destinationFolder)) {
-      fs.mkdirSync(destinationFolder, {
-        recursive: true,
-      })
-    }
+		if (!fs.existsSync(destinationFolder)) {
+			fs.mkdirSync(destinationFolder, {
+				recursive: true,
+			})
+		}
 
-    fs.writeFile(`${destinationFolder}/${fileName}`, file.buffer, (error) => {
-      if (error) console.log(error)
-    })
+		fs.writeFile(
+			`${destinationFolder}/${fileName}`,
+			file.buffer,
+			(error) => {
+				if (error) console.log(error)
+			},
+		)
 
-    return fileName
-  }
+		return fileName
+	}
 
-  async deleteTemporaryFile(folder: string) {
-    if (folder) {
-      fs.rm(
-        `${this.config.get('NODE_PATH')}storage/tmp/${folder}`,
-        { recursive: true },
-        (error) => {
-          if (error) console.log(error)
-        },
-      )
-    }
-  }
+	async deleteTemporaryFile(folder: string) {
+		if (folder) {
+			fs.rm(
+				`${this.config.get('NODE_PATH')}storage/tmp/${folder}`,
+				{ recursive: true },
+				(error) => {
+					if (error) console.log(error)
+				},
+			)
+		}
+	}
 
-  async saveFile(folder: string, id: number, formats?: any) {
-    const temporaryFile = await this.prisma.temporaryFile.findFirst({
-      where: {
-        folder,
-      },
-    })
+	async saveFile(folder: string, id: number, formats?: any) {
+		const temporaryFile = await this.prisma.temporaryFile.findFirst({
+			where: {
+				folder,
+			},
+		})
 
-    if (temporaryFile) {
-      const conversions = []
+		if (temporaryFile) {
+			const conversions = []
 
-      const fileName = `${crypto.randomUUID()}-original${path.extname(temporaryFile.file)}`
+			const fileName = `${crypto.randomUUID()}-original${path.extname(temporaryFile.file)}`
 
-      const destinationFolder = `${this.config.get('NODE_PATH')}storage/${folder}`
+			const destinationFolder = `${this.config.get('NODE_PATH')}storage/${folder}`
 
-      if (!fs.existsSync(destinationFolder)) {
-        fs.mkdirSync(destinationFolder, {
-          recursive: true,
-        })
-      }
+			if (!fs.existsSync(destinationFolder)) {
+				fs.mkdirSync(destinationFolder, {
+					recursive: true,
+				})
+			}
 
-      fs.cp(
-        `${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}/${temporaryFile.file}`,
-        `${destinationFolder}/${fileName}`,
-        (error) => {
-          if (error) console.log(error)
-        },
-      )
+			fs.cp(
+				`${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}/${temporaryFile.file}`,
+				`${destinationFolder}/${fileName}`,
+				(error) => {
+					if (error) console.log(error)
+				},
+			)
 
-      conversions.push({ original: fileName })
+			conversions.push({ original: fileName })
 
-      if (formats) {
-        for (const format of formats) {
-          const fileName = await this.convertImage(temporaryFile, format)
+			if (formats) {
+				for (const format of formats) {
+					const fileName = await this.convertImage(
+						temporaryFile,
+						format,
+					)
 
-          conversions.push({ [format.name]: fileName })
-        }
-      }
+					conversions.push({ [format.name]: fileName })
+				}
+			}
 
-      await this.prisma.temporaryFile.delete({
-        where: {
-          id: temporaryFile.id,
-        },
-      })
+			await this.prisma.temporaryFile.delete({
+				where: {
+					id: temporaryFile.id,
+				},
+			})
 
-      fs.rm(
-        `${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}`,
-        { recursive: true },
-        (error) => {
-          if (error) console.log(error)
-        },
-      )
+			fs.rm(
+				`${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}`,
+				{ recursive: true },
+				(error) => {
+					if (error) console.log(error)
+				},
+			)
 
-      return conversions
-    }
-  }
+			return conversions
+		}
+	}
 
-  async deleteFile(url: string) {
-    fs.rm(
-      `${this.config.get('NODE_PATH')}storage/${url}`,
-      { recursive: true },
-      (error) => {
-        if (error) console.log(error)
-      },
-    )
-  }
+	async deleteFile(url: string) {
+		fs.rm(
+			`${this.config.get('NODE_PATH')}storage/${url}`,
+			{ recursive: true },
+			(error) => {
+				if (error) console.log(error)
+			},
+		)
+	}
 
-  private async convertImage(temporaryFile: TemporaryFile, format?: any) {
-    let fileName: string
+	private async convertImage(temporaryFile: TemporaryFile, format?: any) {
+		let fileName: string
 
-    const temporaryPath = `${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}/${
-      temporaryFile.file
-    }`
+		const temporaryPath = `${this.config.get('NODE_PATH')}storage/tmp/${temporaryFile.folder}/${
+			temporaryFile.file
+		}`
 
-    const destinationFolder = `${this.config.get('NODE_PATH')}storage/${temporaryFile.folder}`
+		const destinationFolder = `${this.config.get('NODE_PATH')}storage/${temporaryFile.folder}`
 
-    if (!fs.existsSync(destinationFolder)) {
-      fs.mkdirSync(destinationFolder, {
-        recursive: true,
-      })
-    }
+		if (!fs.existsSync(destinationFolder)) {
+			fs.mkdirSync(destinationFolder, {
+				recursive: true,
+			})
+		}
 
-    if (format) {
-      fileName = `${crypto.randomUUID()}-${format.name}.${format.format}`
+		if (format) {
+			fileName = `${crypto.randomUUID()}-${format.name}.${format.format}`
 
-      await sharp(temporaryPath)
-        .resize(format.width, null, { fit: format.fit })
-        .toFormat(format.format)
-        .toFile(`${destinationFolder}/${fileName}`)
-    }
+			await sharp(temporaryPath)
+				.resize(format.width, null, { fit: format.fit })
+				.toFormat(format.format)
+				.toFile(`${destinationFolder}/${fileName}`)
+		}
 
-    return fileName
-  }
+		return fileName
+	}
 }
