@@ -25,9 +25,20 @@ class Work extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
+        $this->addMediaConversion('featuredSm')
+            ->performOnCollections('featured')
+            ->fit(Fit::Contain, 400)
+            ->nonQueued();
+
         $this->addMediaConversion('featured')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 1058)
+            ->nonQueued();
+
+        $this->addMediaConversion('featuredWebpSm')
+            ->performOnCollections('featured')
+            ->format('webp')
+            ->fit(Fit::Contain, 400)
             ->nonQueued();
 
         $this->addMediaConversion('featuredWebp')
@@ -36,9 +47,20 @@ class Work extends Model implements HasMedia
             ->fit(Fit::Contain, 1058)
             ->nonQueued();
 
+        $this->addMediaConversion('featuredSm@2')
+            ->performOnCollections('featured')
+            ->fit(Fit::Contain, 800)
+            ->nonQueued();
+
         $this->addMediaConversion('featured@2')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 2116)
+            ->nonQueued();
+
+        $this->addMediaConversion('featuredWebpSm@2')
+            ->performOnCollections('featured')
+            ->format('webp')
+            ->fit(Fit::Contain, 800)
             ->nonQueued();
 
         $this->addMediaConversion('featuredWebp@2')
@@ -47,9 +69,20 @@ class Work extends Model implements HasMedia
             ->fit(Fit::Contain, 2116)
             ->nonQueued();
 
+        $this->addMediaConversion('workSm')
+            ->performOnCollections('works')
+            ->fit(Fit::Contain, 400)
+            ->nonQueued();
+
         $this->addMediaConversion('work')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 1000)
+            ->nonQueued();
+
+        $this->addMediaConversion('workWebpSm')
+            ->performOnCollections('works')
+            ->format('webp')
+            ->fit(Fit::Contain, 400)
             ->nonQueued();
 
         $this->addMediaConversion('workWebp')
@@ -58,9 +91,20 @@ class Work extends Model implements HasMedia
             ->fit(Fit::Contain, 1000)
             ->nonQueued();
 
+        $this->addMediaConversion('workSm@2')
+            ->performOnCollections('works')
+            ->fit(Fit::Contain, 800)
+            ->nonQueued();
+
         $this->addMediaConversion('work@2')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 2000)
+            ->nonQueued();
+
+        $this->addMediaConversion('workWebpSm@2')
+            ->performOnCollections('works')
+            ->format('webp')
+            ->fit(Fit::Contain, 800)
             ->nonQueued();
 
         $this->addMediaConversion('workWebp@2')
@@ -81,10 +125,15 @@ class Work extends Model implements HasMedia
                 foreach ($media as $image) {
                     if ($item['data']['gallery_id'] == $image->custom_properties['gallery_id']) {
                         $item['data']['images'] = [
+                            'imageSm' => $image->getUrl('workSm'),
                             'image' => $image->getUrl('work'),
+                            'imageWebpSm' => $image->getUrl('workWebpSm'),
                             'imageWebp' => $image->getUrl('workWebp'),
+                            'imageSmX2' => $image->getUrl('workSm@2'),
                             'imageX2' => $image->getUrl('work@2'),
+                            'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
                             'imageWebpX2' => $image->getUrl('workWebp@2')];
+
                         $content[] = $item;
                     }
                 }
@@ -104,9 +153,13 @@ class Work extends Model implements HasMedia
         $images = [];
 
         foreach ($data as $image) {
+            $image->featuredSm = $image->getUrl('featuredSm');
             $image->featured = $image->getUrl('featured');
+            $image->featuredWebpSm = $image->getUrl('featuredWebpSm');
             $image->featuredWebp = $image->getUrl('featuredWebp');
+            $image->featuredSmX2 = $image->getUrl('featuredSm@2');
             $image->featuredX2 = $image->getUrl('featured@2');
+            $image->featuredWebpSmX2 = $image->getUrl('featuredWebpSm@2');
             $image->featuredWebpX2 = $image->getUrl('featuredWebp@2');
             $images = $image;
         }
