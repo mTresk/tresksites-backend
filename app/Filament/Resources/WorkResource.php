@@ -166,4 +166,9 @@ class WorkResource extends Resource
             'edit' => Pages\EditWork::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }
