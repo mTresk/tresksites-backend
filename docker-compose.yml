@@ -12,6 +12,7 @@ services:
       - "database"
     networks:
       - web
+      - internal
     container_name: tresksites_app
     restart: always
   # Web Server
@@ -35,6 +36,7 @@ services:
       - "traefik.http.routers.tresksites_server.tls.certresolver=myresolver"
     networks:
       - web
+      - internal
   # Database
   database:
     image: mysql:8.0
@@ -42,14 +44,15 @@ services:
       - dbdata:/var/lib/mysql
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - "33063:3306"
     container_name: tresksites_db
     restart: always
     networks:
+      - internal
       - web
   # Database management
   pma:
@@ -64,6 +67,7 @@ services:
       - "8887:80"
     networks:
       - web
+      - internal
     container_name: tresksites_pma
     restart: always
   # Redis
@@ -74,12 +78,14 @@ services:
       - "6382:6379"
     networks:
       - web
+      - internal
     restart: always
 
 networks:
   web:
     external: true
-    driver: bridge
+  internal:
+    external: false
 
 volumes:
   dbdata:
