@@ -23,11 +23,15 @@ RUN apt-get update && apt-get install -y \
       docker-php-ext-install gd && \
       docker-php-ext-configure intl && \
       docker-php-ext-install intl && \
-      curl -sLS https://deb.nodesource.com/setup_18.x | bash - && \
+      curl -sLS https://deb.nodesource.com/setup_20.x | bash - && \
       apt-get install -y nodejs && \
       npm install -g npm && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+  && docker-php-ext-install \
+    pcntl
 
 # Install composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -35,9 +39,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin
 
-RUN docker-php-ext-configure pcntl --enable-pcntl \
-  && docker-php-ext-install \
-    pcntl
+
 WORKDIR /var/www
 
 # Make supervisor log directory
