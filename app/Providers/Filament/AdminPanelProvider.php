@@ -30,6 +30,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#ff565c',
             ])
+            ->favicon(asset('images/favicon.png'))
+            ->brandLogo(fn() => view('filament.admin.logo'))
+            ->darkModeBrandLogo(fn() => view('filament.admin.logo-dark'))
+            ->brandLogoHeight('3rem')
             ->font('Manrope')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
