@@ -6,17 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RouteResource;
 use App\Http\Resources\WorkResource;
 use App\Models\Work;
+use Illuminate\Support\Facades\Cache;
 
 class WorkController extends Controller
 {
     public static function index()
     {
-        return WorkResource::collection(Work::latest()->paginate(5));
+        $page = request()->input('page') ?? 1;
+
+        return WorkResource::collection(Cache::rememberForever('works' . $page, function () {
+            return Work::latest()->paginate(5);
+        }));
     }
 
     public static function featured()
     {
-        return WorkResource::collection(Work::where('is_featured', true)->get());
+        return WorkResource::collection(Cache::rememberForever('featured', function () {
+            return Work::where('is_featured', true)->get();
+        }));
     }
 
     public static function show(Work $work)
