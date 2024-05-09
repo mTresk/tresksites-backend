@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.3
 
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
@@ -9,6 +9,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY --from=ghcr.io/roadrunner-server/roadrunner:latest /usr/bin/rr /usr/local/bin/rr
 
 RUN apt-get update && apt-get install -y \
       apt-utils \
@@ -29,7 +30,7 @@ RUN apt-get update && apt-get install -y \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN install-php-extensions pcntl opcache pdo_mysql bcmath exif zip intl gd
+RUN install-php-extensions pcntl opcache pdo_mysql bcmath exif zip intl gd sockets
 
 WORKDIR /var/www
 
