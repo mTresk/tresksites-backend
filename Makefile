@@ -1,4 +1,4 @@
-run: up composer link assets storage
+run: up composer link migration assets
 
 up:
 	docker-compose up -d --build
@@ -12,9 +12,9 @@ composer:
 link:
 	docker-compose run --rm app php artisan storage:link
 
+migration:
+	docker-compose run --rm app php artisan migrate
+
 assets:
 	docker-compose run --rm app npm i
 	docker-compose run --rm app npm run build
-
-storage:
-	sudo chmod -R 777 /storage
