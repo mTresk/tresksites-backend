@@ -1,0 +1,11 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+#nprogress .bar {
+    background: #ff565c !important;
+}
+
+#nprogress .peg {
+    display: none !important;
+}
