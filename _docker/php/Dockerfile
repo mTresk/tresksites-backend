@@ -1,5 +1,13 @@
 FROM php:8.3
 
+ARG UID
+ARG GID
+
+ENV UID=${UID}
+ENV GID=${GID}
+
+WORKDIR /var/www
+
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
     PHP_OPCACHE_MEMORY_CONSUMPTION="256" \
@@ -32,7 +40,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN install-php-extensions pcntl opcache pdo_mysql bcmath exif zip intl gd sockets
 
-WORKDIR /var/www
+# Add user for Laravel application
+RUN groupadd -g ${GID} laravel
+RUN useradd -u ${UID} -ms /bin/bash -g laravel laravel
 
 # Make supervisor log directory
 RUN mkdir -p /var/log/supervisor
