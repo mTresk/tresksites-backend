@@ -1,4 +1,4 @@
-run: up composer optimize link migration assets
+run: up composer link migration assets optimize
 
 up:
 	docker-compose up -d --build
@@ -9,9 +9,6 @@ down:
 composer:
 	docker-compose run --rm app composer install
 
-optimize:
-	docker-compose run --rm app php artisan optimize
-
 link:
 	docker-compose run --rm app php artisan storage:link
 
@@ -21,3 +18,7 @@ migration:
 assets:
 	docker-compose run --rm app npm i
 	docker-compose run --rm app npm run build
+
+optimize:
+	docker-compose run --rm app php artisan optimize
+	docker-compose run --rm app php artisan config:cache
