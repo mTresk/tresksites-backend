@@ -1,6 +1,6 @@
-install: build composer link migration assets optimize
+install: build composer octane link migration assets optimize
 
-deploy: down pull build migration optimize
+deploy: down pull build composer migration optimize
 
 run: build optimize
 
@@ -12,13 +12,14 @@ build:
 
 composer:
 	docker-compose run --rm app composer install
+
+octane:
 	docker-compose run --rm app composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http predis/predis
 
 link:
 	docker-compose run --rm app php artisan storage:link
 
 migration:
-	sleep 10
 	docker-compose run --rm app php artisan migrate --force
 
 assets:
