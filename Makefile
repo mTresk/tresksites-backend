@@ -5,7 +5,6 @@ deploy: down pull build migration optimize
 run: build optimize
 
 down:
-	docker-compose run --rm app php artisan horizon:terminate
 	docker-compose down
 
 build:
