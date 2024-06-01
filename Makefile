@@ -1,10 +1,15 @@
-run: up composer link migration assets optimize
+install: build composer link migration assets optimize
 
-up:
-	docker-compose up -d --build
+deploy: down pull build migration optimize
+
+run: build optimize
 
 down:
+	docker-compose run --rm app php artisan horizon:terminate
 	docker-compose down
+
+build:
+	docker-compose up -d --build
 
 composer:
 	docker-compose run --rm app composer install
@@ -14,7 +19,7 @@ link:
 	docker-compose run --rm app php artisan storage:link
 
 migration:
-	docker-compose run --rm app php artisan migrate
+	docker-compose run --rm app php artisan migrate --force
 
 assets:
 	docker-compose run --rm app npm i
@@ -23,3 +28,7 @@ assets:
 optimize:
 	docker-compose run --rm app php artisan optimize
 	docker-compose run --rm app php artisan config:cache
+
+pull:
+	git reset --hard
+	git pull
