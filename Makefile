@@ -11,7 +11,7 @@ build:
 	docker-compose up -d --build
 
 composer:
-	docker-compose run --rm app composer install
+	docker-compose run --rm app composer install --no-dev
 
 octane:
 	docker-compose run --rm app composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http predis/predis
