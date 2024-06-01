@@ -18,6 +18,7 @@ link:
 	docker-compose run --rm app php artisan storage:link
 
 migration:
+	sleep 10
 	docker-compose run --rm app php artisan migrate --force
 
 assets:
