@@ -1,11 +1,11 @@
 <x-mail::message>
     Новый заказ с сайта!
 
-    Имя: {{ $mailData['name'] }}
+    Имя: {{ $order->name }}
 
-    Телефон: {{ $mailData['phone'] }}
+    Телефон: {{ $order->phone }}
 
-    Email: {{ $mailData['email'] }}
+    Email: {{ $order->email }}
 
-    Сообщение: {{ $mailData['message'] }}
+    Сообщение: {{ $order->message }}
 </x-mail::message>

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
@@ -9,16 +10,11 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NewOrderNotify extends Mailable
+class NewOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public object $order;
-
-    public function __construct($order)
-    {
-        $this->order = $order;
-    }
+    public function __construct(public Order $order) {}
 
     public function envelope(): Envelope
     {
@@ -31,7 +27,6 @@ class NewOrderNotify extends Mailable
     {
         return new Content(
             markdown: 'mail.order',
-            with: ['mailData' => $this->order]
         );
     }
 
