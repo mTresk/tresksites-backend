@@ -11,7 +11,10 @@ class Service extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $fillable = ['title', 'description'];
+    protected $fillable = [
+        'title',
+        'description',
+    ];
 
     protected function icon(): Attribute
     {

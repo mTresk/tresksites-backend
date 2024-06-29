@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Price extends Model
 {
-    protected $fillable = ['title', 'description', 'block'];
+    protected $fillable = [
+        'title',
+        'description',
+        'block',
+    ];
 
-    protected $casts = ['block' => 'array'];
+    protected $casts = [
+        'block' => 'array',
+    ];
 }

@@ -17,9 +17,20 @@ class Work extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $fillable = ['name', 'slug', 'label', 'url', 'list', 'content', 'is_featured'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'label',
+        'url',
+        'list',
+        'content',
+        'is_featured',
+    ];
 
-    protected $casts = ['content' => 'array', 'is_featured' => 'boolean'];
+    protected $casts = [
+        'content' => 'array',
+        'is_featured' => 'boolean',
+    ];
 
     public function seo(): MorphOne
     {
@@ -135,7 +146,8 @@ class Work extends Model implements HasMedia
                             'imageSmX2' => $image->getUrl('workSm@2'),
                             'imageX2' => $image->getUrl('work@2'),
                             'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
-                            'imageWebpX2' => $image->getUrl('workWebp@2')];
+                            'imageWebpX2' => $image->getUrl('workWebp@2')
+                        ];
 
                         $content[] = $item;
                     }

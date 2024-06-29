@@ -12,5 +12,11 @@ class Order extends Model
 {
     use Notifiable;
 
-    protected $fillable = ['name', 'phone', 'email', 'message', 'attachment'];
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'message',
+        'attachment',
+    ];
 }

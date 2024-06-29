@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class SEO extends Model
 {
-    protected $fillable = ['title', 'description'];
+    protected $fillable = [
+        'title',
+        'description',
+    ];
 
     public $table = 'seo';
 
