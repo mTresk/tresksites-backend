@@ -19,7 +19,7 @@ class NewOrderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Получено сообщение с сайта ' . config('app.name'),
+            subject: 'Получено сообщение с сайта '.config('app.name'),
         );
     }
 
@@ -34,8 +34,10 @@ class NewOrderMail extends Mailable
     {
         if (isset($this->order['attachment'])) {
             return [
-                Attachment::fromStorage('/public/' . $this->order['attachment'])
+                Attachment::fromStorageDisk('public', $this->order['attachment'])
             ];
-        } else return [];
+        } else {
+            return [];
+        }
     }
 }
