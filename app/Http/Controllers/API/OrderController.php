@@ -17,7 +17,7 @@ class OrderController extends Controller
 
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-            $path = $file->store('attachments', 'public');
+            $path = $file->store('attachments', 'local');
         }
 
         if ($formData) {

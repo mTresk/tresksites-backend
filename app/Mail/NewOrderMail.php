@@ -34,7 +34,7 @@ class NewOrderMail extends Mailable
     {
         if (isset($this->order['attachment'])) {
             return [
-                Attachment::fromStorageDisk('public', $this->order['attachment'])
+                Attachment::fromStorageDisk('local', $this->order['attachment'])
             ];
         } else {
             return [];

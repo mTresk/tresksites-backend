@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
@@ -13,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 class OrderResource extends Resource
 {
@@ -44,9 +46,17 @@ class OrderResource extends Resource
                         ->label('Сообщение')
                         ->rows(5),
                     FileUpload::make('attachment')
-                        ->downloadable()
+                        ->disk('local')
                         ->directory('attachments')
                         ->label('Файл'),
+                    Actions::make([
+                        Actions\Action::make('download')
+                            ->label('Скачать')
+                            ->action(fn($record) => Storage::download($record->attachment))
+                            ->button(),
+                    ])
+                        ->label('Actions')
+                        ->hidden(fn($record) => !$record->attachment)
                 ])
 
             ]);
