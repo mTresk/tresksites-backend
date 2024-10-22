@@ -1,11 +1,14 @@
 <x-mail::message>
-    Новый заказ с сайта!
+Новый заказ с сайта!
 
-    Имя: {{ $order->name }}
+Имя: {{ $order->name }}
 
-    Телефон: {{ $order->phone }}
+Телефон: {{ $order->phone }}
+@isset($order->email)
+Email: {{ $order->email }}
 
-    Email: {{ $order->email }}
-
-    Сообщение: {{ $order->message }}
+@endisset
+@isset($order->message)
+Сообщение: {{ $order->message }}
+@endisset
 </x-mail::message>
