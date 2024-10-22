@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\OrderReceivedEvent;
 use App\Mail\NewOrderMail;
 use App\Notifications\TelegramOrderNotification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class OrderReceivedListener

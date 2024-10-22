@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 
 class OrderObserver
 {
-
     public function updated(Order $order): void
     {
         if ($order->isDirty('attachment')) {
