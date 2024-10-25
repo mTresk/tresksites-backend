@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -16,7 +17,7 @@ class TelegramOrderNotification extends Notification implements ShouldQueue
         return ["telegram"];
     }
 
-    public function toTelegram($order)
+    public function toTelegram(Order $order)
     {
         return TelegramMessage::create()
             ->to(config('services.telegram-bot-api.chat_id'))
