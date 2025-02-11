@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AdvantageController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\PolicyController;
@@ -16,4 +17,5 @@ Route::post('orders', [OrderController::class, 'create']);
 Route::get('contacts', [ContactController::class, 'index']);
 Route::get('services', [ServiceController::class, 'index']);
 Route::get('prices', [PriceController::class, 'index']);
+Route::get('advantages', [AdvantageController::class, 'index']);
 Route::get('routes', [WorkController::class, 'routes']);
