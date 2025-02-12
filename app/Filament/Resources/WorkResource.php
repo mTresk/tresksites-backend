@@ -18,6 +18,8 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
@@ -113,7 +115,8 @@ class WorkResource extends Resource
                 ])->columnSpan(2),
                 Section::make('SEO')
                     ->schema([
-                        SEO::make()])->columnSpan(1)
+                        SEO::make()
+                    ])->columnSpan(1)
             ])->columns(3);
     }
 
@@ -124,15 +127,17 @@ class WorkResource extends Resource
                 SpatieMediaLibraryImageColumn::make('avatar')
                     ->collection('featured')
                     ->label('Изображение'),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable()
                     ->label('Название'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->label('Дата создания'),
-                Tables\Columns\TextColumn::make('updated_at')
+                ToggleColumn::make('is_featured')
+                    ->label('В подборке'),
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
