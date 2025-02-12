@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
@@ -16,6 +17,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Work extends Model implements HasMedia
 {
     use InteractsWithMedia;
+
+    use Searchable;
 
     protected $fillable = [
         'name',
@@ -182,5 +185,14 @@ class Work extends Model implements HasMedia
         return Attribute::make(
             get: fn() => $images,
         );
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'content' => $this->content,
+            'list' => $this->list
+        ];
     }
 }
