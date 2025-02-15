@@ -45,90 +45,90 @@ class Work extends Model implements HasMedia
         $this->addMediaConversion('featuredSm')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 400)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featured')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 1058)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featuredWebpSm')
             ->performOnCollections('featured')
             ->format('webp')
             ->fit(Fit::Contain, 400)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featuredWebp')
             ->performOnCollections('featured')
             ->format('webp')
             ->fit(Fit::Contain, 1058)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featuredSm@2')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 800)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featured@2')
             ->performOnCollections('featured')
             ->fit(Fit::Contain, 2116)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featuredWebpSm@2')
             ->performOnCollections('featured')
             ->format('webp')
             ->fit(Fit::Contain, 800)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('featuredWebp@2')
             ->performOnCollections('featured')
             ->format('webp')
             ->fit(Fit::Contain, 2116)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('workSm')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 400)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('work')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 1000)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('workWebpSm')
             ->performOnCollections('works')
             ->format('webp')
             ->fit(Fit::Contain, 400)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('workWebp')
             ->performOnCollections('works')
             ->format('webp')
             ->fit(Fit::Contain, 1000)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('workSm@2')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 800)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('work@2')
             ->performOnCollections('works')
             ->fit(Fit::Contain, 2000)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('workWebpSm@2')
             ->performOnCollections('works')
             ->format('webp')
             ->fit(Fit::Contain, 800)
-            ->nonQueued();
+            ->queued();
 
         $this->addMediaConversion('workWebp@2')
             ->performOnCollections('works')
             ->format('webp')
             ->fit(Fit::Contain, 2000)
-            ->nonQueued();
+            ->queued();
     }
 
     protected function setContent(): Attribute
