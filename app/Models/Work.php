@@ -176,7 +176,7 @@ class Work extends Model implements HasMedia
     {
         return [
             'imageSm' => $image->getUrl('featuredSm'),
-            'featured' => $image->getUrl('featured'),
+            'image' => $image->getUrl('featured'),
             'imageWebpSm' => $image->getUrl('featuredWebpSm'),
             'imageWebp' => $image->getUrl('featuredWebp'),
             'imageSmX2' => $image->getUrl('featuredSm@2'),
