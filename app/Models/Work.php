@@ -137,16 +137,7 @@ class Work extends Model implements HasMedia
 
         $galleryMap = collect($media)->mapWithKeys(function ($image) {
             return [
-                $image->custom_properties['gallery_id'] => [
-                    'imageSm' => $image->getUrl('workSm'),
-                    'image' => $image->getUrl('work'),
-                    'imageWebpSm' => $image->getUrl('workWebpSm'),
-                    'imageWebp' => $image->getUrl('workWebp'),
-                    'imageSmX2' => $image->getUrl('workSm@2'),
-                    'imageX2' => $image->getUrl('work@2'),
-                    'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
-                    'imageWebpX2' => $image->getUrl('workWebp@2')
-                ]
+                $image->custom_properties['gallery_id'] => $this->formatWorkImage($image),
             ];
         });
 
@@ -183,6 +174,20 @@ class Work extends Model implements HasMedia
             'imageX2' => $image->getUrl('featured@2'),
             'imageWebpSmX2' => $image->getUrl('featuredWebpSm@2'),
             'imageWebpX2' => $image->getUrl('featuredWebp@2'),
+        ];
+    }
+
+    private function formatWorkImage($image): array
+    {
+        return [
+            'imageSm' => $image->getUrl('workSm'),
+            'image' => $image->getUrl('work'),
+            'imageWebpSm' => $image->getUrl('workWebpSm'),
+            'imageWebp' => $image->getUrl('workWebp'),
+            'imageSmX2' => $image->getUrl('workSm@2'),
+            'imageX2' => $image->getUrl('work@2'),
+            'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
+            'imageWebpX2' => $image->getUrl('workWebp@2')
         ];
     }
 
