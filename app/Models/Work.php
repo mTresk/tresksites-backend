@@ -131,7 +131,6 @@ class Work extends Model implements HasMedia
             ->nonQueued();
     }
 
-
     protected function setContent(): Attribute
     {
         $media = $this->getMedia('works');
@@ -162,7 +161,6 @@ class Work extends Model implements HasMedia
             get: fn() => $content,
         );
     }
-
 
     protected function featured(): Attribute
     {
