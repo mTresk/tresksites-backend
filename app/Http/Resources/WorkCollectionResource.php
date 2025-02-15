@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Work
  * @property mixed $setContent
  */
-class WorkResource extends JsonResource
+class WorkCollectionResource extends JsonResource
 {
 
     public function toArray(Request $request): array
@@ -20,9 +20,7 @@ class WorkResource extends JsonResource
             'label' => $this->label,
             'url' => $this->url,
             'list' => $this->list,
-            'content' => $this->setContent,
             'featured' => $this->featured,
-            'seo' => SeoResource::make($this->seo)
         ];
     }
 }

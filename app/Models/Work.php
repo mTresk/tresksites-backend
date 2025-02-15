@@ -135,56 +135,57 @@ class Work extends Model implements HasMedia
     protected function setContent(): Attribute
     {
         $media = $this->getMedia('works');
-        $content = [];
 
-        foreach ($this->content as $item) {
-            if (isset($item['data']['gallery_id'])) {
-                foreach ($media as $image) {
-                    if ($item['data']['gallery_id'] == $image->custom_properties['gallery_id']) {
-                        $item['data']['images'] = [
-                            'imageSm' => $image->getUrl('workSm'),
-                            'image' => $image->getUrl('work'),
-                            'imageWebpSm' => $image->getUrl('workWebpSm'),
-                            'imageWebp' => $image->getUrl('workWebp'),
-                            'imageSmX2' => $image->getUrl('workSm@2'),
-                            'imageX2' => $image->getUrl('work@2'),
-                            'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
-                            'imageWebpX2' => $image->getUrl('workWebp@2')
-                        ];
+        $galleryMap = collect($media)->mapWithKeys(function ($image) {
+            return [
+                $image->custom_properties['gallery_id'] => [
+                    'imageSm' => $image->getUrl('workSm'),
+                    'image' => $image->getUrl('work'),
+                    'imageWebpSm' => $image->getUrl('workWebpSm'),
+                    'imageWebp' => $image->getUrl('workWebp'),
+                    'imageSmX2' => $image->getUrl('workSm@2'),
+                    'imageX2' => $image->getUrl('work@2'),
+                    'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
+                    'imageWebpX2' => $image->getUrl('workWebp@2')
+                ]
+            ];
+        });
 
-                        $content[] = $item;
-                    }
-                }
-            } else {
-                $content[] = $item;
+        $content = collect($this->content)->map(function ($item) use ($galleryMap) {
+            if (!empty($item['data']['gallery_id']) && isset($galleryMap[$item['data']['gallery_id']])) {
+                $item['data']['images'] = $galleryMap[$item['data']['gallery_id']];
             }
-        }
+            return $item;
+        })->toArray();
 
         return Attribute::make(
             get: fn() => $content,
         );
     }
 
+
     protected function featured(): Attribute
     {
-        $data = $this->getMedia('featured');
-        $images = [];
-
-        foreach ($data as $image) {
-            $image->featuredSm = $image->getUrl('featuredSm');
-            $image->featured = $image->getUrl('featured');
-            $image->featuredWebpSm = $image->getUrl('featuredWebpSm');
-            $image->featuredWebp = $image->getUrl('featuredWebp');
-            $image->featuredSmX2 = $image->getUrl('featuredSm@2');
-            $image->featuredX2 = $image->getUrl('featured@2');
-            $image->featuredWebpSmX2 = $image->getUrl('featuredWebpSm@2');
-            $image->featuredWebpX2 = $image->getUrl('featuredWebp@2');
-            $images = $image;
-        }
+        $images = collect($this->getMedia('featured'))->map(fn($image
+        ) => $this->formatFeaturedImage($image))->first();
 
         return Attribute::make(
             get: fn() => $images,
         );
+    }
+
+    private function formatFeaturedImage($image): array
+    {
+        return [
+            'imageSm' => $image->getUrl('featuredSm'),
+            'featured' => $image->getUrl('featured'),
+            'imageWebpSm' => $image->getUrl('featuredWebpSm'),
+            'imageWebp' => $image->getUrl('featuredWebp'),
+            'imageSmX2' => $image->getUrl('featuredSm@2'),
+            'imageX2' => $image->getUrl('featured@2'),
+            'imageWebpSmX2' => $image->getUrl('featuredWebpSm@2'),
+            'imageWebpX2' => $image->getUrl('featuredWebp@2'),
+        ];
     }
 
     public function toSearchableArray(): array

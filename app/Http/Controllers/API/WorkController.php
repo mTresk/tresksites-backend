@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RouteResource;
+use App\Http\Resources\WorkCollectionResource;
 use App\Http\Resources\WorkResource;
 use App\Models\Work;
 use Illuminate\Support\Facades\Cache;
@@ -14,14 +15,14 @@ class WorkController extends Controller
     {
         $page = request()->input('page') ?? 1;
 
-        return WorkResource::collection(Cache::rememberForever('works' . $page, function () {
+        return WorkCollectionResource::collection(Cache::rememberForever('works'.$page, function () {
             return Work::latest()->paginate(5);
         }));
     }
 
     public static function featured()
     {
-        return WorkResource::collection(Cache::rememberForever('featured', function () {
+        return WorkCollectionResource::collection(Cache::rememberForever('featured', function () {
             return Work::where('is_featured', true)->get();
         }));
     }
@@ -30,7 +31,7 @@ class WorkController extends Controller
     {
         $data = WorkResource::make($work);
 
-        $otherWorks = WorkResource::collection(Work::select()
+        $otherWorks = WorkCollectionResource::collection(Work::select()
             ->where('id', '!=', $work->id)
             ->inRandomOrder()
             ->limit(3)
