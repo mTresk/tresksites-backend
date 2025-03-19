@@ -6,10 +6,10 @@ use App\Filament\Resources\WorkResource\Pages;
 use App\Filament\Services\SEO;
 use App\Models\Work;
 use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -62,6 +62,33 @@ class WorkResource extends Resource
                                 ->required()
                                 ->maxLength(255)
                                 ->label('Слаг'),
+                            Select::make('tag_id')
+                                ->multiple()
+                                ->preload()
+                                ->createOptionForm([
+                                    Section::make()
+                                        ->schema([
+                                            TextInput::make('name')
+                                                ->live(true)->afterStateUpdated(fn(Set $set, ?string $state) => $set(
+                                                    'slug',
+                                                    Str::slug($state)
+                                                ))
+                                                ->unique('tags', 'name', null, 'id')
+                                                ->required()
+                                                ->maxLength(50)
+                                                ->label('Название'),
+
+                                            TextInput::make('slug')
+                                                ->unique('tags', 'slug', null, 'id')
+                                                ->readOnly()
+                                                ->maxLength(155)
+                                                ->label('Слаг'),
+
+                                        ])
+                                ])
+                                ->searchable()
+                                ->relationship('tags', 'name')
+                                ->label('Теги'),
                             TextInput::make('label')
                                 ->maxLength(255)
                                 ->label('Лейбл'),

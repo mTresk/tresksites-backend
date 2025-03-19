@@ -18,6 +18,7 @@ class WorkCollectionResource extends JsonResource
             'title' => $this->name,
             'slug' => $this->slug,
             'label' => $this->label,
+            'tags' => TagResource::collection($this->tags),
             'url' => $this->url,
             'list' => $this->list,
             'featured' => $this->featured,

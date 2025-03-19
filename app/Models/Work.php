@@ -6,6 +6,7 @@ use App\Observers\WorkObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -16,9 +17,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 #[ObservedBy([WorkObserver::class])]
 class Work extends Model implements HasMedia
 {
-    use InteractsWithMedia;
-
-    use Searchable;
+    use InteractsWithMedia, Searchable;
 
     protected $fillable = [
         'name',
@@ -35,9 +34,18 @@ class Work extends Model implements HasMedia
         'is_featured' => 'boolean',
     ];
 
+    protected $with = [
+        'tags'
+    ];
+
     public function seo(): MorphOne
     {
         return $this->morphOne(SEO::class, 'model')->withDefault();
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     public function registerMediaConversions(Media $media = null): void
