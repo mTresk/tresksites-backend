@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $modelLabel = 'Теги';
     protected static ?string $pluralModelLabel = 'Теги';
     protected static ?string $navigationLabel = 'Теги';
