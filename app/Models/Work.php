@@ -45,7 +45,7 @@ class Work extends Model implements HasMedia
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class)->using(TagWork::class);
     }
 
     public function registerMediaConversions(Media $media = null): void
