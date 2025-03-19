@@ -80,7 +80,6 @@ class WorkResource extends Resource
 
                                             TextInput::make('slug')
                                                 ->unique('tags', 'slug', null, 'id')
-                                                ->readOnly()
                                                 ->maxLength(155)
                                                 ->label('Слаг'),
 
