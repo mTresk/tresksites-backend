@@ -13,7 +13,7 @@ class AdvantageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'block' => $this->block,
+            ...$this->block,
         ];
     }
 }
