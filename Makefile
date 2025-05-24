@@ -1,10 +1,11 @@
 install: build composer octane link migration assets optimize
 
-deploy: down pull build composer migration optimize
+deploy: pull composer migration assets optimize horizon
 
 run: build optimize
 
 down:
+	docker-compose run --rm app php artisan horizon:terminate
 	docker-compose down
 
 build:
@@ -33,3 +34,6 @@ optimize:
 pull:
 	git reset --hard
 	git pull
+
+horizon:
+	docker-compose run --rm app php artisan horizon:terminate
