@@ -31,6 +31,12 @@ services:
       - "app"
     container_name: ${PROJECT_NAME}_server
     restart: always
+    labels:
+      - "traefik.http.routers.${PROJECT_NAME}_server.rule=Host(`${PROJECT_BASE_URL}`)"
+      - "traefik.port=80"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.${PROJECT_NAME}_server.entrypoints=websecure"
+      - "traefik.http.routers.${PROJECT_NAME}_server.tls.certresolver=myresolver"
     networks:
       - web
       - internal
