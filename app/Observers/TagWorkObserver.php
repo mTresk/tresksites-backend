@@ -2,32 +2,26 @@
 
 namespace App\Observers;
 
-use App\Models\TagWork;
 use Illuminate\Support\Facades\Cache;
 
 class TagWorkObserver
 {
-    public function created(TagWork $tagWork): void
+    public function created(): void
     {
         Cache::flush();
     }
 
-    public function updated(TagWork $tagWork): void
+    public function updated(): void
     {
         Cache::flush();
     }
 
-    public function deleted(TagWork $tagWork): void
+    public function deleted(): void
     {
         Cache::flush();
     }
 
-    public function restored(TagWork $tagWork): void
-    {
-        Cache::flush();
-    }
-
-    public function forceDeleted(TagWork $tagWork): void
+    public function restored(): void
     {
         Cache::flush();
     }

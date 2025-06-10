@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SearchResource;
 use App\Models\Work;
 
-class SearchController extends Controller
+final class SearchController
 {
     public function search(SearchRequest $request)
     {

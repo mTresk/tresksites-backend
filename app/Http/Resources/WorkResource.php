@@ -6,12 +6,13 @@ use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Work
+/**
+ * @mixin Work
+ *
  * @property mixed $setContent
  */
 class WorkResource extends JsonResource
 {
-
     public function toArray(Request $request): array
     {
         return [
@@ -23,7 +24,7 @@ class WorkResource extends JsonResource
             'list' => $this->list,
             'content' => $this->setContent,
             'featured' => $this->featured,
-            'seo' => SeoResource::make($this->seo)
+            'seo' => SeoResource::make($this->seo),
         ];
     }
 }

@@ -17,9 +17,13 @@ use Filament\Pages\Page;
 class ContactsPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
     protected static ?string $navigationLabel = 'Контакты';
+
     protected static ?string $title = 'Контакты';
+
     protected static ?string $slug = 'contacts-page';
+
     protected static ?int $navigationSort = 5;
 
     protected static string $view = 'filament.pages.contacts-page';
@@ -65,7 +69,7 @@ class ContactsPage extends Page
                     Repeater::make('block')
                         ->schema([
                             RichEditor::make('content')
-                                ->label('Содержимое')
+                                ->label('Содержимое'),
                         ])
                         ->label('Информация')
                         ->addActionLabel('Добавить содержимое'),

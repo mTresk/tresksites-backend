@@ -19,7 +19,7 @@ class Service extends Model implements HasMedia
     protected function icon(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->getFirstMedia('services')->original_url,
+            get: fn () => $this->getFirstMedia('services')->original_url,
         );
     }
 }

@@ -15,23 +15,28 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
-use Filament\Forms\Set;
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class WorkResource extends Resource
 {
     protected static ?string $model = Work::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
     protected static ?string $modelLabel = 'Работы';
+
     protected static ?string $pluralModelLabel = 'Работы';
+
     protected static ?string $navigationLabel = 'Работы';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -69,21 +74,21 @@ class WorkResource extends Resource
                                     Section::make()
                                         ->schema([
                                             TextInput::make('name')
-                                                ->live(true)->afterStateUpdated(fn(Set $set, ?string $state) => $set(
+                                                ->live(true)->afterStateUpdated(fn (Set $set, ?string $state) => $set(
                                                     'slug',
                                                     Str::slug($state)
                                                 ))
-                                                ->unique('tags', 'name', null, 'id')
+                                                ->unique('tags', 'name', null, true)
                                                 ->required()
                                                 ->maxLength(50)
                                                 ->label('Название'),
 
                                             TextInput::make('slug')
-                                                ->unique('tags', 'slug', null, 'id')
+                                                ->unique('tags', 'slug', null, true)
                                                 ->maxLength(155)
                                                 ->label('Слаг'),
 
-                                        ])
+                                        ]),
                                 ])
                                 ->searchable()
                                 ->relationship('tags', 'name')
@@ -110,18 +115,18 @@ class WorkResource extends Resource
                                         ->required()
                                         ->label('Текст'),
                                     Hidden::make('gallery_id')
-                                        ->default(fn() => Str::random(12)),
+                                        ->default(fn () => Str::random(12)),
                                     SpatieMediaLibraryFileUpload::make('images')
                                         ->label('Изображение')
                                         ->collection('works')
                                         ->multiple()
                                         ->required()
                                         ->downloadable()
-                                        ->customProperties(fn(Get $get): array => [
+                                        ->customProperties(fn (Get $get): array => [
                                             'gallery_id' => $get('gallery_id'),
                                         ])
                                         ->filterMediaUsing(
-                                            fn(Collection $media, Get $get): Collection => $media->where(
+                                            fn (Collection $media, Get $get): Collection => $media->where(
                                                 'custom_properties.gallery_id',
                                                 $get('gallery_id')
                                             ),
@@ -134,15 +139,15 @@ class WorkResource extends Resource
                                         ->required()
                                         ->label('Текст'),
                                 ])
-                                ->label('Текст')
+                                ->label('Текст'),
                         ])
                         ->hiddenLabel()
                         ->addActionLabel('Добавить блок'),
                 ])->columnSpan(2),
                 Section::make('SEO')
                     ->schema([
-                        SEO::make()
-                    ])->columnSpan(1)
+                        SEO::make(),
+                    ])->columnSpan(1),
             ])->columns(3);
     }
 

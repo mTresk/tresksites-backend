@@ -14,7 +14,7 @@ class TelegramOrderNotification extends Notification implements ShouldQueue
 
     public function via(): array
     {
-        return ["telegram"];
+        return ['telegram'];
     }
 
     public function toTelegram(Order $order)

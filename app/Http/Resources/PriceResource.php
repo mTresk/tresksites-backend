@@ -6,10 +6,11 @@ use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Price */
+/**
+ * @mixin Price
+ */
 class PriceResource extends JsonResource
 {
-
     public function toArray(Request $request): array
     {
         return [

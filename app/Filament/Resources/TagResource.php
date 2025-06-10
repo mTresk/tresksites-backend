@@ -17,10 +17,15 @@ use Illuminate\Support\Str;
 class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+
     protected static ?string $modelLabel = 'Теги';
+
     protected static ?string $pluralModelLabel = 'Теги';
+
     protected static ?string $navigationLabel = 'Теги';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -30,21 +35,21 @@ class TagResource extends Resource
                 Section::make()
                     ->schema([
                         TextInput::make('name')
-                            ->live(true)->afterStateUpdated(fn(Set $set, ?string $state) => $set(
+                            ->live(true)->afterStateUpdated(fn (Set $set, ?string $state) => $set(
                                 'slug',
                                 Str::slug($state)
                             ))
-                            ->unique('tags', 'name', null, 'id')
+                            ->unique('tags', 'name', null, true)
                             ->required()
                             ->maxLength(50)
                             ->label('Название'),
 
                         TextInput::make('slug')
-                            ->unique('tags', 'slug', null, 'id')
+                            ->unique('tags', 'slug', null, true)
                             ->maxLength(155)
                             ->label('Слаг'),
 
-                    ])
+                    ]),
             ]);
     }
 

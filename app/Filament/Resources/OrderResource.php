@@ -19,12 +19,16 @@ use Illuminate\Support\Facades\Storage;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $modelLabel = 'Заказы';
-    protected static ?string $pluralModelLabel = 'Заказы';
-    protected static ?string $navigationLabel = 'Заказы';
-    protected static ?int $navigationSort = 3;
 
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $modelLabel = 'Заказы';
+
+    protected static ?string $pluralModelLabel = 'Заказы';
+
+    protected static ?string $navigationLabel = 'Заказы';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -52,12 +56,12 @@ class OrderResource extends Resource
                     Actions::make([
                         Actions\Action::make('download')
                             ->label('Скачать')
-                            ->action(fn($record) => Storage::disk('local')->download($record->attachment))
+                            ->action(fn ($record) => Storage::disk('local')->download($record->attachment))
                             ->button(),
                     ])
                         ->label('Actions')
-                        ->hidden(fn($record) => !$record->attachment)
-                ])
+                        ->hidden(fn ($record) => ! $record->attachment),
+                ]),
 
             ]);
     }

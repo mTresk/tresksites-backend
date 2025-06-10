@@ -20,10 +20,10 @@ class EmailOrderNotification extends Notification implements ShouldQueue
 
     public function toMail(Order $order): MailMessage
     {
-        $mail = (new MailMessage)
+        $mail = (new MailMessage())
             ->subject('Получено сообщение с сайта '.config('app.name'))
             ->markdown('mail.order', ['order' => $order]);
-        
+
         if ($order->attachment) {
             $mail->attach(Storage::disk('local')->path($order->attachment));
         }

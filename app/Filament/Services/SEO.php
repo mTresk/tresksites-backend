@@ -18,18 +18,18 @@ class SEO
                 'title' => TextInput::make('title')
                     ->columnSpan(2)
                     ->helperText(function (?string $state): string {
-                        return (string)Str::of(strlen($state))
+                        return Str::of((string) strlen($state ?? ''))
                             ->append(' / ')
-                            ->append(60 . ' ')
+                            ->append(60 .' ')
                             ->append(Str::of('символов')->lower());
                     })
                     ->reactive()
                     ->label('SEO заголовок'),
                 'description' => Textarea::make('description')
                     ->helperText(function (?string $state): string {
-                        return (string)Str::of(strlen($state))
+                        return Str::of((string) strlen($state ?? ''))
                             ->append(' / ')
-                            ->append(160 . ' ')
+                            ->append(160 .' ')
                             ->append(Str::of('символов')->lower());
                     })
                     ->reactive()
@@ -45,7 +45,7 @@ class SEO
             ->statePath('seo')
             ->dehydrated(false)
             ->saveRelationshipsUsing(function (Model $record, array $state) use ($only): void {
-                $state = collect($state)->only($only)->map(fn($value) => $value ?: null)->all();
+                $state = collect($state)->only($only)->map(fn ($value) => $value ?: null)->all();
 
                 if ($record->seo && $record->seo->exists) {
                     $record->seo->update($state);

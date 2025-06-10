@@ -16,7 +16,7 @@ class OrderObserver
 
     public function deleted(Order $order): void
     {
-        if (!is_null($order->attachment)) {
+        if (! is_null($order->attachment)) {
             Storage::disk('local')->delete($order->attachment);
         }
     }

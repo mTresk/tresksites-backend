@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\RouteResource;
 use App\Http\Resources\WorkCollectionResource;
 use App\Http\Resources\WorkResource;
 use App\Models\Work;
 use Illuminate\Support\Facades\Cache;
 
-class WorkController extends Controller
+final class WorkController
 {
     public static function index()
     {

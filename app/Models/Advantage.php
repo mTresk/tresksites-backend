@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Advantage extends Model
 {
     protected $fillable = [
-        'block'
+        'block',
     ];
 
     protected $casts = [
-        'block' => 'array'
+        'block' => 'array',
     ];
 }

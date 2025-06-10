@@ -6,7 +6,9 @@ use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Contact */
+/**
+ * @mixin Contact
+ */
 class ContactResource extends JsonResource
 {
     public function toArray(Request $request): array

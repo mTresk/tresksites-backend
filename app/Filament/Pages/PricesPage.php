@@ -16,9 +16,13 @@ use Filament\Pages\Page;
 class PricesPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+
     protected static ?string $navigationLabel = 'Цены';
+
     protected static ?string $title = 'Цены';
+
     protected static ?string $slug = 'prices-page';
+
     protected static ?int $navigationSort = 4;
 
     protected static string $view = 'filament.pages.prices-page';

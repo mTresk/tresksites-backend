@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 #[ObservedBy([WorkObserver::class])]
 class Work extends Model implements HasMedia
@@ -29,13 +29,13 @@ class Work extends Model implements HasMedia
         'is_featured',
     ];
 
+    protected $with = [
+        'tags',
+    ];
+
     protected $casts = [
         'content' => 'array',
         'is_featured' => 'boolean',
-    ];
-
-    protected $with = [
-        'tags'
     ];
 
     public function seo(): MorphOne
@@ -48,7 +48,7 @@ class Work extends Model implements HasMedia
         return $this->belongsToMany(Tag::class)->using(TagWork::class);
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('featuredSm')
             ->performOnCollections('featured')
@@ -150,24 +150,25 @@ class Work extends Model implements HasMedia
         });
 
         $content = collect($this->content)->map(function ($item) use ($galleryMap) {
-            if (!empty($item['data']['gallery_id']) && isset($galleryMap[$item['data']['gallery_id']])) {
+            if (! empty($item['data']['gallery_id']) && isset($galleryMap[$item['data']['gallery_id']])) {
                 $item['data']['images'] = $galleryMap[$item['data']['gallery_id']];
             }
+
             return $item;
         })->toArray();
 
         return Attribute::make(
-            get: fn() => $content,
+            get: fn () => $content,
         );
     }
 
     protected function featured(): Attribute
     {
-        $images = collect($this->getMedia('featured'))->map(fn($image
+        $images = collect($this->getMedia('featured'))->map(fn ($image
         ) => $this->formatFeaturedImage($image))->first();
 
         return Attribute::make(
-            get: fn() => $images,
+            get: fn () => $images,
         );
     }
 
@@ -195,7 +196,7 @@ class Work extends Model implements HasMedia
             'imageSmX2' => $image->getUrl('workSm@2'),
             'imageX2' => $image->getUrl('work@2'),
             'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
-            'imageWebpX2' => $image->getUrl('workWebp@2')
+            'imageWebpX2' => $image->getUrl('workWebp@2'),
         ];
     }
 
@@ -204,7 +205,7 @@ class Work extends Model implements HasMedia
         return [
             'name' => $this->name,
             'content' => $this->content,
-            'list' => $this->list
+            'list' => $this->list,
         ];
     }
 }

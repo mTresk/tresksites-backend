@@ -15,9 +15,13 @@ use Filament\Pages\Page;
 class AdvantagesPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-fire';
+
     protected static ?string $navigationLabel = 'Преимущества';
+
     protected static ?string $title = 'Преимущества';
+
     protected static ?string $slug = 'advantages-page';
+
     protected static ?int $navigationSort = 5;
 
     protected static string $view = 'filament.pages.advantages-page';

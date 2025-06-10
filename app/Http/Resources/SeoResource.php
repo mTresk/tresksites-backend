@@ -6,10 +6,11 @@ use App\Models\SEO;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin SEO */
+/**
+ * @mixin SEO
+ */
 class SeoResource extends JsonResource
 {
-
     public function toArray(Request $request): array
     {
         return [

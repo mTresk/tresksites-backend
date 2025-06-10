@@ -15,11 +15,14 @@ use Filament\Pages\Page;
 class PolicyPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationLabel = 'Политика конфиденциальности';
-    protected static ?string $title = 'Политика конфиденциальности';
-    protected static ?string $slug = 'policy-page';
-    protected static ?int $navigationSort = 10;
 
+    protected static ?string $navigationLabel = 'Политика конфиденциальности';
+
+    protected static ?string $title = 'Политика конфиденциальности';
+
+    protected static ?string $slug = 'policy-page';
+
+    protected static ?int $navigationSort = 10;
 
     protected static string $view = 'filament.pages.policy-page';
 

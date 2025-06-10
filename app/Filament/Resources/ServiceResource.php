@@ -18,10 +18,15 @@ use Filament\Tables\Table;
 class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-on-square-stack';
+
     protected static ?string $modelLabel = 'Услуги';
+
     protected static ?string $pluralModelLabel = 'Услуги';
+
     protected static ?string $navigationLabel = 'Услуги';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -43,7 +48,7 @@ class ServiceResource extends Resource
                             ->maxLength(65535)
                             ->columnSpanFull()
                             ->label('Описание'),
-                    ])
+                    ]),
 
             ]);
     }

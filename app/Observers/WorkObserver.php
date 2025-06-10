@@ -2,32 +2,31 @@
 
 namespace App\Observers;
 
-use App\Models\Work;
 use Illuminate\Support\Facades\Cache;
 
 class WorkObserver
 {
-    public function created(Work $work): void
+    public function created(): void
     {
         Cache::flush();
     }
 
-    public function updated(Work $work): void
+    public function updated(): void
     {
         Cache::flush();
     }
 
-    public function deleted(Work $work): void
+    public function deleted(): void
     {
         Cache::flush();
     }
 
-    public function restored(Work $work): void
+    public function restored(): void
     {
         Cache::flush();
     }
-    
-    public function forceDeleted(Work $work): void
+
+    public function forceDeleted(): void
     {
         Cache::flush();
     }

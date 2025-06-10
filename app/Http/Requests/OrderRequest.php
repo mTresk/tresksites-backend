@@ -13,7 +13,7 @@ class OrderRequest extends FormRequest
             'phone' => ['required', 'string'],
             'email' => ['string', 'email', 'nullable'],
             'message' => ['string', 'nullable'],
-            'attachment' => ['file', 'nullable', 'max:1024', 'sometimes']
+            'attachment' => ['file', 'nullable', 'max:1024', 'sometimes'],
         ];
     }
 }
