@@ -2,22 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\WorkResource\Pages;
+use App\Filament\Resources\WorkResource\Pages\CreateWork;
+use App\Filament\Resources\WorkResource\Pages\EditWork;
+use App\Filament\Resources\WorkResource\Pages\ListWorks;
 use App\Filament\Services\SEO;
 use App\Models\Work;
+use BackedEnum;
+use Exception;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Builder;
+use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -29,7 +36,7 @@ class WorkResource extends Resource
 {
     protected static ?string $model = Work::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $modelLabel = 'Работы';
 
@@ -39,10 +46,13 @@ class WorkResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    /**
+     * @throws Exception
+     */
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Контент')->schema([
                     Section::make()
                         ->schema([
@@ -59,7 +69,6 @@ class WorkResource extends Resource
                                     if (($get('slug') ?? '') !== Str::slug($old)) {
                                         return;
                                     }
-
                                     $set('slug', Str::slug($state));
                                 })
                                 ->label('Заголовок'),
@@ -87,7 +96,6 @@ class WorkResource extends Resource
                                                 ->unique('tags', 'slug', null, true)
                                                 ->maxLength(155)
                                                 ->label('Слаг'),
-
                                         ]),
                                 ])
                                 ->searchable()
@@ -109,7 +117,7 @@ class WorkResource extends Resource
                         ]),
                     Builder::make('content')
                         ->blocks([
-                            Builder\Block::make('block')
+                            Block::make('block')
                                 ->schema([
                                     RichEditor::make('html')
                                         ->required()
@@ -133,7 +141,7 @@ class WorkResource extends Resource
                                         ),
                                 ])
                                 ->label('Текст + изображение'),
-                            Builder\Block::make('text')
+                            Block::make('text')
                                 ->schema([
                                     RichEditor::make('html')
                                         ->required()
@@ -151,6 +159,9 @@ class WorkResource extends Resource
             ])->columns(3);
     }
 
+    /**
+     * @throws Exception
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -177,12 +188,12 @@ class WorkResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -197,14 +208,14 @@ class WorkResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListWorks::route('/'),
-            'create' => Pages\CreateWork::route('/create'),
-            'edit' => Pages\EditWork::route('/{record}/edit'),
+            'index' => ListWorks::route('/'),
+            'create' => CreateWork::route('/create'),
+            'edit' => EditWork::route('/{record}/edit'),
         ];
     }
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return (string) static::getModel()::count();
     }
 }

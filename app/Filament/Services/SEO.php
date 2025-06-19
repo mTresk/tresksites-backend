@@ -2,15 +2,19 @@
 
 namespace App\Filament\Services;
 
-use Filament\Forms\Components\Group;
+use Exception;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Group;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class SEO
 {
+    /**
+     * @throws Exception
+     */
     public static function make(array $only = ['title', 'description']): Group
     {
         return Group::make(
@@ -38,7 +42,7 @@ class SEO
             ], $only)
         )
             ->afterStateHydrated(function (Group $component, ?Model $record) use ($only): void {
-                $component->getChildComponentContainer()->fill(
+                $component->getChildSchema()->fill(
                     $record?->seo?->only($only) ?: []
                 );
             })

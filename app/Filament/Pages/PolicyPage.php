@@ -3,18 +3,19 @@
 namespace App\Filament\Pages;
 
 use App\Models\Policy;
+use BackedEnum;
+use Exception;
 use Filament\Actions\Action;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class PolicyPage extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationLabel = 'Политика конфиденциальности';
 
@@ -24,34 +25,22 @@ class PolicyPage extends Page
 
     protected static ?int $navigationSort = 10;
 
-    protected static string $view = 'filament.pages.policy-page';
-
-    use InteractsWithForms;
+    protected string $view = 'filament.pages.policy-page';
 
     public ?array $data = [];
 
-    public ?Policy $record = null;
-
     public function mount(): void
     {
-        $record = Policy::first();
-
-        if ($record) {
-            $this->record = $record;
-        } else {
-            $this->record = Policy::create([
-                'title' => '',
-                'content' => '',
-            ]);
-        }
-
-        $this->form->fill($this->record->attributesToArray());
+        $this->form->fill($this->getRecord()?->attributesToArray());
     }
 
-    public function form(Form $form): Form
+    /**
+     * @throws Exception
+     */
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make([
                     TextInput::make('title')
                         ->label('Заголовок')
@@ -61,20 +50,36 @@ class PolicyPage extends Page
                         ->required(),
                 ]),
             ])
-            ->model($this->record)
-            ->statePath('data')
-            ->operation('edit');
+            ->record($this->getRecord())
+            ->statePath('data');
     }
 
     public function save(): void
     {
-        $this->record->update($this->form->getState());
-        $this->form->model($this->record)->saveRelationships();
+        $data = $this->form->getState();
+
+        $record = $this->getRecord();
+
+        if (! $record) {
+            $record = new Policy();
+        }
+
+        $record->fill($data);
+        $record->save();
+
+        if ($record->wasRecentlyCreated) {
+            $this->form->record($record)->saveRelationships();
+        }
 
         Notification::make()
             ->success()
             ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
             ->send();
+    }
+
+    public function getRecord(): ?Policy
+    {
+        return Policy::query()->first();
     }
 
     protected function getFormActions(): array

@@ -3,18 +3,19 @@
 namespace App\Filament\Pages;
 
 use App\Models\Advantage;
+use BackedEnum;
+use Exception;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class AdvantagesPage extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-fire';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-fire';
 
     protected static ?string $navigationLabel = 'Преимущества';
 
@@ -24,33 +25,22 @@ class AdvantagesPage extends Page
 
     protected static ?int $navigationSort = 5;
 
-    protected static string $view = 'filament.pages.advantages-page';
-
-    use InteractsWithForms;
+    protected string $view = 'filament.pages.advantages-page';
 
     public ?array $data = [];
 
-    public ?Advantage $record = null;
-
     public function mount(): void
     {
-        $record = Advantage::first();
-
-        if ($record) {
-            $this->record = $record;
-        } else {
-            $this->record = Advantage::create([
-                'block' => [],
-            ]);
-        }
-
-        $this->form->fill($this->record->attributesToArray());
+        $this->form->fill($this->getRecord()?->attributesToArray());
     }
 
-    public function form(Form $form): Form
+    /**
+     * @throws Exception
+     */
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make([
                     Repeater::make('block')
                         ->schema([
@@ -61,24 +51,40 @@ class AdvantagesPage extends Page
                         ])
                         ->label('Преимущества')
                         ->addActionLabel('Добавить позицию')
-                        ->columns(2)
+                        ->columns()
                         ->maxItems(4),
                 ]),
             ])
-            ->model($this->record)
-            ->statePath('data')
-            ->operation('edit');
+            ->record($this->getRecord())
+            ->statePath('data');
     }
 
     public function save(): void
     {
-        $this->record->update($this->form->getState());
-        $this->form->model($this->record)->saveRelationships();
+        $data = $this->form->getState();
+
+        $record = $this->getRecord();
+
+        if (! $record) {
+            $record = new Advantage();
+        }
+
+        $record->fill($data);
+        $record->save();
+
+        if ($record->wasRecentlyCreated) {
+            $this->form->record($record)->saveRelationships();
+        }
 
         Notification::make()
             ->success()
             ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
             ->send();
+    }
+
+    public function getRecord(): ?Advantage
+    {
+        return Advantage::query()->first();
     }
 
     protected function getFormActions(): array
