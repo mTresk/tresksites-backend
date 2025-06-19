@@ -12,10 +12,11 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class PolicyPage extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected static ?string $navigationLabel = 'Политика конфиденциальности';
 
@@ -25,7 +26,7 @@ class PolicyPage extends Page
 
     protected static ?int $navigationSort = 10;
 
-    protected string $view = 'filament.pages.policy-page';
+    protected string $view = 'filament.pages.custom-page';
 
     public ?array $data = [];
 

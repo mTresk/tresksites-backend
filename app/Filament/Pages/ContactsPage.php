@@ -14,10 +14,11 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class ContactsPage extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-book-open';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static ?string $navigationLabel = 'Контакты';
 
@@ -27,7 +28,7 @@ class ContactsPage extends Page
 
     protected static ?int $navigationSort = 5;
 
-    protected string $view = 'filament.pages.contacts-page';
+    protected string $view = 'filament.pages.custom-page';
 
     public ?array $data = [];
 

@@ -13,10 +13,11 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class PricesPage extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
 
     protected static ?string $navigationLabel = 'Цены';
 
@@ -26,7 +27,7 @@ class PricesPage extends Page
 
     protected static ?int $navigationSort = 4;
 
-    protected string $view = 'filament.pages.prices-page';
+    protected string $view = 'filament.pages.custom-page';
 
     public ?array $data = [];
 

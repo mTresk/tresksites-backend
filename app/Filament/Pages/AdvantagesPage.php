@@ -12,10 +12,11 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class AdvantagesPage extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-fire';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFire;
 
     protected static ?string $navigationLabel = 'Преимущества';
 
@@ -25,7 +26,7 @@ class AdvantagesPage extends Page
 
     protected static ?int $navigationSort = 5;
 
-    protected string $view = 'filament.pages.advantages-page';
+    protected string $view = 'filament.pages.custom-page';
 
     public ?array $data = [];
 
