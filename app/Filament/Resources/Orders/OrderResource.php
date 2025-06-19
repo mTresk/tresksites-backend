@@ -6,7 +6,7 @@ use App\Filament\Resources\Orders\Pages\CreateOrder;
 use App\Filament\Resources\Orders\Pages\EditOrder;
 use App\Filament\Resources\Orders\Pages\ListOrders;
 use App\Filament\Resources\Orders\Schemas\OrderForm;
-use App\Filament\Resources\Orders\Tables\OrderTable;
+use App\Filament\Resources\Orders\Tables\OrdersTable;
 use App\Models\Order;
 use BackedEnum;
 use Exception;
@@ -42,7 +42,7 @@ class OrderResource extends Resource
      */
     public static function table(Table $table): Table
     {
-        return OrderTable::configure($table);
+        return OrdersTable::configure($table);
     }
 
     public static function getRelations(): array

@@ -6,7 +6,7 @@ use App\Filament\Resources\Tags\Pages\CreateTag;
 use App\Filament\Resources\Tags\Pages\EditTag;
 use App\Filament\Resources\Tags\Pages\ListTags;
 use App\Filament\Resources\Tags\Schemas\TagForm;
-use App\Filament\Resources\Tags\Tables\TagTable;
+use App\Filament\Resources\Tags\Tables\TagsTable;
 use App\Models\Tag;
 use BackedEnum;
 use Exception;
@@ -42,7 +42,7 @@ class TagResource extends Resource
      */
     public static function table(Table $table): Table
     {
-        return TagTable::configure($table);
+        return TagsTable::configure($table);
     }
 
     public static function getRelations(): array

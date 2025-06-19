@@ -6,7 +6,7 @@ use App\Filament\Resources\Works\Pages\CreateWork;
 use App\Filament\Resources\Works\Pages\EditWork;
 use App\Filament\Resources\Works\Pages\ListWorks;
 use App\Filament\Resources\Works\Schemas\WorkForm;
-use App\Filament\Resources\Works\Tables\WorkTable;
+use App\Filament\Resources\Works\Tables\WorksTable;
 use App\Models\Work;
 use BackedEnum;
 use Exception;
@@ -42,7 +42,7 @@ class WorkResource extends Resource
      */
     public static function table(Table $table): Table
     {
-        return WorkTable::configure($table);
+        return WorksTable::configure($table);
     }
 
     public static function getRelations(): array

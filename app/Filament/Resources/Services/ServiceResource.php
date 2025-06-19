@@ -6,7 +6,7 @@ use App\Filament\Resources\Services\Pages\CreateService;
 use App\Filament\Resources\Services\Pages\EditService;
 use App\Filament\Resources\Services\Pages\ListServices;
 use App\Filament\Resources\Services\Schemas\ServiceForm;
-use App\Filament\Resources\Services\Tables\ServiceTable;
+use App\Filament\Resources\Services\Tables\ServicesTable;
 use App\Models\Service;
 use BackedEnum;
 use Exception;
@@ -42,7 +42,7 @@ class ServiceResource extends Resource
      */
     public static function table(Table $table): Table
     {
-        return ServiceTable::configure($table);
+        return ServicesTable::configure($table);
     }
 
     public static function getRelations(): array

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Tags\Tables;
+namespace App\Filament\Resources\Services\Tables;
 
 use Exception;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class TagTable
+class ServicesTable
 {
     /**
      * @throws Exception
@@ -15,12 +16,12 @@ class TagTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                SpatieMediaLibraryImageColumn::make('icon')
+                    ->collection('services')
+                    ->label('Иконка'),
+                TextColumn::make('title')
                     ->searchable()
-                    ->label('Название'),
-                TextColumn::make('slug')
-                    ->searchable()
-                    ->label('Слаг'),
+                    ->label('Заголовок'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

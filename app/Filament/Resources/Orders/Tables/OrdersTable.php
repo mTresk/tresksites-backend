@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Services\Tables;
+namespace App\Filament\Resources\Orders\Tables;
 
 use Exception;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ServiceTable
+class OrdersTable
 {
     /**
      * @throws Exception
@@ -16,21 +15,24 @@ class ServiceTable
     {
         return $table
             ->columns([
-                SpatieMediaLibraryImageColumn::make('icon')
-                    ->collection('services')
-                    ->label('Иконка'),
-                TextColumn::make('title')
+                TextColumn::make('name')
                     ->searchable()
-                    ->label('Заголовок'),
+                    ->label('Имя'),
+                TextColumn::make('phone')
+                    ->searchable()
+                    ->label('Телефон'),
+                TextColumn::make('email')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Дата создания'),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
