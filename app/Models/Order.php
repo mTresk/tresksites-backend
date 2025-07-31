@@ -21,4 +21,9 @@ final class Order extends Model
         'message',
         'attachment',
     ];
+
+    public function routeNotificationForMail(): array|string
+    {
+        return config('services.admin-email');
+    }
 }
