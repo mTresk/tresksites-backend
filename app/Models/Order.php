@@ -24,6 +24,6 @@ final class Order extends Model
 
     public function routeNotificationForMail(): array|string
     {
-        return config('services.admin-email');
+        return config(key: 'services.admin-email');
     }
 }
