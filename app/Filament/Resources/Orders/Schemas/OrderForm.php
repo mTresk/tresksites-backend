@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Orders\Schemas;
 
 use Exception;
@@ -12,7 +14,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Storage;
 
-class OrderForm
+final class OrderForm
 {
     /**
      * @throws Exception

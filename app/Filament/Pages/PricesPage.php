@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Pages;
 
 use App\Models\Price;
@@ -15,8 +17,10 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
-class PricesPage extends Page
+final class PricesPage extends Page
 {
+    public ?array $data = [];
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
 
     protected static ?string $navigationLabel = 'Цены';
@@ -28,8 +32,6 @@ class PricesPage extends Page
     protected static ?int $navigationSort = 4;
 
     protected string $view = 'filament.pages.custom-page';
-
-    public ?array $data = [];
 
     public function mount(): void
     {

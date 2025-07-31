@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Works;
 
 use App\Filament\Resources\Works\Pages\CreateWork;
@@ -15,7 +17,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class WorkResource extends Resource
+final class WorkResource extends Resource
 {
     protected static ?string $model = Work::class;
 
@@ -61,8 +63,8 @@ class WorkResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): string
     {
-        return (string) static::getModel()::count();
+        return (string) self::getModel()::count();
     }
 }

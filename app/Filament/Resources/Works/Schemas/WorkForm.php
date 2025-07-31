@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Works\Schemas;
 
 use App\Filament\Services\SEO;
@@ -19,7 +21,7 @@ use Filament\Schemas\Schema;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class WorkForm
+final class WorkForm
 {
     /**
      * @throws Exception

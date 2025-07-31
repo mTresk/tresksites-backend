@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use Illuminate\Support\Facades\Cache;
 
-class TagWorkObserver
+final class TagWorkObserver
 {
     public function created(): void
     {

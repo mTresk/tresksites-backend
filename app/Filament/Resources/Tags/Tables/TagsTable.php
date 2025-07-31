@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Tags\Tables;
 
 use Exception;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class TagsTable
+final class TagsTable
 {
     /**
      * @throws Exception

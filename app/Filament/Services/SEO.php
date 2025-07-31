@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Services;
 
 use Exception;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class SEO
+final class SEO
 {
     /**
      * @throws Exception
@@ -22,19 +24,19 @@ class SEO
                 'title' => TextInput::make('title')
                     ->columnSpan(2)
                     ->helperText(function (?string $state): string {
-                        return Str::of((string) strlen($state ?? ''))
+                        return (string) Str::of((string) mb_strlen($state ?? ''))
                             ->append(' / ')
                             ->append(60 .' ')
-                            ->append(Str::of('символов')->lower());
+                            ->append((string) Str::of('символов')->lower());
                     })
                     ->reactive()
                     ->label('SEO заголовок'),
                 'description' => Textarea::make('description')
                     ->helperText(function (?string $state): string {
-                        return Str::of((string) strlen($state ?? ''))
+                        return (string) Str::of((string) mb_strlen($state ?? ''))
                             ->append(' / ')
                             ->append(160 .' ')
-                            ->append(Str::of('символов')->lower());
+                            ->append((string) Str::of('символов')->lower());
                     })
                     ->reactive()
                     ->label('SEO описание')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\SEO;
@@ -9,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin SEO
  */
-class SeoResource extends JsonResource
+final class SeoResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

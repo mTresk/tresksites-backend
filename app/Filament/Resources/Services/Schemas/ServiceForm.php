@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Services\Schemas;
 
 use Exception;
@@ -9,7 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class ServiceForm
+final class ServiceForm
 {
     /**
      * @throws Exception

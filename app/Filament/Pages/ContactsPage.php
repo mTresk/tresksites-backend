@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Pages;
 
 use App\Models\Contact;
@@ -16,8 +18,10 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
-class ContactsPage extends Page
+final class ContactsPage extends Page
 {
+    public ?array $data = [];
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static ?string $navigationLabel = 'Контакты';
@@ -29,8 +33,6 @@ class ContactsPage extends Page
     protected static ?int $navigationSort = 5;
 
     protected string $view = 'filament.pages.custom-page';
-
-    public ?array $data = [];
 
     public function mount(): void
     {

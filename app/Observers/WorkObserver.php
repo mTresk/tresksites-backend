@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use Illuminate\Support\Facades\Cache;
 
-class WorkObserver
+final class WorkObserver
 {
     public function created(): void
     {

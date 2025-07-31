@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Storage;
 
-class OrderObserver
+final class OrderObserver
 {
     public function updated(Order $order): void
     {

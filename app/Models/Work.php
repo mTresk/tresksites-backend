@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Observers\WorkObserver;
@@ -15,7 +17,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 #[ObservedBy([WorkObserver::class])]
-class Work extends Model implements HasMedia
+final class Work extends Model implements HasMedia
 {
     use InteractsWithMedia, Searchable;
 
@@ -139,6 +141,15 @@ class Work extends Model implements HasMedia
             ->queued();
     }
 
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'content' => $this->content,
+            'list' => $this->list,
+        ];
+    }
+
     protected function setContent(): Attribute
     {
         $media = $this->getMedia('works');
@@ -197,15 +208,6 @@ class Work extends Model implements HasMedia
             'imageX2' => $image->getUrl('work@2'),
             'imageWebpSmX2' => $image->getUrl('workWebpSm@2'),
             'imageWebpX2' => $image->getUrl('workWebp@2'),
-        ];
-    }
-
-    public function toSearchableArray(): array
-    {
-        return [
-            'name' => $this->name,
-            'content' => $this->content,
-            'list' => $this->list,
         ];
     }
 }

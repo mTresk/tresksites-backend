@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\API\AdvantageController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\OrderController;

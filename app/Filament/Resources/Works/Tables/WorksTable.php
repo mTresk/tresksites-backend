@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Works\Tables;
 
 use Exception;
@@ -8,7 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
-class WorksTable
+final class WorksTable
 {
     /**
      * @throws Exception

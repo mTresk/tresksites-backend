@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Models\Order;
@@ -9,7 +11,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
 
-class EmailOrderNotification extends Notification implements ShouldQueue
+final class EmailOrderNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\Advantage;
@@ -9,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin Advantage
  */
-class AdvantageResource extends JsonResource
+final class AdvantageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\Policy;
@@ -9,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin Policy
  */
-class PolicyResource extends JsonResource
+final class PolicyResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

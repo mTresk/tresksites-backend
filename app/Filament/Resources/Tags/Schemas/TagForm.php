@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Tags\Schemas;
 
 use Exception;
@@ -9,7 +11,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
-class TagForm
+final class TagForm
 {
     /**
      * @throws Exception

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Observers\OrderObserver;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 #[ObservedBy([OrderObserver::class])]
-class Order extends Model
+final class Order extends Model
 {
     use Notifiable;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Services;
 
 use App\Filament\Resources\Services\Pages\CreateService;
@@ -15,7 +17,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class ServiceResource extends Resource
+final class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
