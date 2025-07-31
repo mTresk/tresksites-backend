@@ -11,7 +11,10 @@ final class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'keywords' => ['string', 'required'],
+            'keywords' => [
+                'string',
+                'required',
+            ],
         ];
     }
 }

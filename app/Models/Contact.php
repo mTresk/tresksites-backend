@@ -28,7 +28,7 @@ final class Contact extends Model implements HasMedia
     protected function brief(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getFirstMedia('files')->original_url,
+            get: fn () => $this->getFirstMedia(collectionName: 'files')->original_url,
         );
     }
 }

@@ -20,13 +20,13 @@ final class WorkResource extends JsonResource
         return [
             'title' => $this->name,
             'slug' => $this->slug,
-            'tags' => TagResource::collection($this->tags),
+            'tags' => TagResource::collection(resource: $this->tags),
             'label' => $this->label,
             'url' => $this->url,
             'list' => $this->list,
             'content' => $this->setContent,
             'featured' => $this->featured,
-            'seo' => SeoResource::make($this->seo),
+            'seo' => new SeoResource(resource: $this->seo),
         ];
     }
 }

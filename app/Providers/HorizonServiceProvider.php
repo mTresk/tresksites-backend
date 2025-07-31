@@ -14,13 +14,13 @@ final class HorizonServiceProvider extends HorizonApplicationServiceProvider
     {
         parent::boot();
 
-        Horizon::routeMailNotificationsTo(config('services.admin-email'));
+        Horizon::routeMailNotificationsTo(email: config(key: 'services.admin-email'));
     }
 
     protected function gate(): void
     {
-        Gate::define('viewHorizon', function ($user) {
-            return $user->email === config('services.admin-email');
-        });
+        Gate::define(
+            ability: 'viewHorizon',
+            callback: fn ($user) => $user->email === config(key: 'services.admin-email'));
     }
 }

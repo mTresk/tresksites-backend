@@ -11,6 +11,6 @@ final class PriceController
 {
     public function index()
     {
-        return PriceResource::make(Price::first());
+        return new PriceResource(resource: Price::first());
     }
 }

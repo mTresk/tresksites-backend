@@ -11,15 +11,15 @@ final class OrderObserver
 {
     public function updated(Order $order): void
     {
-        if ($order->isDirty('attachment')) {
-            Storage::disk('local')->delete($order->getOriginal('attachment'));
+        if ($order->isDirty(attributes: 'attachment')) {
+            Storage::disk(name: 'local')->delete(paths: $order->getOriginal(key: 'attachment'));
         }
     }
 
     public function deleted(Order $order): void
     {
-        if (! is_null($order->attachment)) {
-            Storage::disk('local')->delete($order->attachment);
+        if (! is_null(value: $order->attachment)) {
+            Storage::disk(name: 'local')->delete(paths: $order->attachment);
         }
     }
 }

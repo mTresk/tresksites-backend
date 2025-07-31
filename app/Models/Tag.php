@@ -19,6 +19,6 @@ final class Tag extends Model
 
     public function works(): BelongsToMany
     {
-        return $this->belongsToMany(Work::class)->using(TagWork::class);
+        return $this->belongsToMany(related: Work::class)->using(class: TagWork::class);
     }
 }

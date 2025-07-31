@@ -11,6 +11,6 @@ final class PolicyController
 {
     public function index()
     {
-        return PolicyResource::make(Policy::first());
+        return new PolicyResource(resource: Policy::first());
     }
 }

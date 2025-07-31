@@ -30,28 +30,28 @@ final class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id(id: 'admin')
+            ->path(path: 'admin')
             ->login()
-            ->colors([
+            ->colors(colors: [
                 'primary' => '#ff565c',
             ])
-            ->favicon(asset('images/favicon.png'))
-            ->brandLogo(fn () => view('filament.admin.logo'))
-            ->darkModeBrandLogo(fn () => view('filament.admin.logo-dark'))
-            ->brandLogoHeight('3rem')
-            ->font('Manrope')
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
+            ->favicon(url: asset(path: 'images/favicon.png'))
+            ->brandLogo(logo: fn () => view(view: 'filament.admin.logo'))
+            ->darkModeBrandLogo(logo: fn () => view(view: 'filament.admin.logo-dark'))
+            ->brandLogoHeight(height: '3rem')
+            ->font(family: 'Manrope')
+            ->discoverResources(in: app_path(path: 'Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path(path: 'Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->pages(pages: [
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
+            ->discoverWidgets(in: app_path(path: 'Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->widgets(widgets: [
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
-            ->middleware([
+            ->middleware(middleware: [
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -62,10 +62,10 @@ final class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->authMiddleware([
+            ->authMiddleware(middleware: [
                 Authenticate::class,
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->viteTheme(theme: 'resources/css/filament/admin/theme.css')
             ->spa();
     }
 }

@@ -11,6 +11,6 @@ final class AdvantageController
 {
     public function index()
     {
-        return AdvantageResource::make(Advantage::first());
+        return new AdvantageResource(resource: Advantage::first());
     }
 }

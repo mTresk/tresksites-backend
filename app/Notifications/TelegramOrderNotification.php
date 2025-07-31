@@ -22,7 +22,12 @@ final class TelegramOrderNotification extends Notification implements ShouldQueu
     public function toTelegram(Order $order)
     {
         return TelegramMessage::create()
-            ->to(config('services.telegram-bot-api.chat_id'))
-            ->view('telegram.order', ['order' => $order]);
+            ->to(chatId: config(key: 'services.telegram-bot-api.chat_id'))
+            ->view(
+                view: 'telegram.order',
+                data: [
+                    'order' => $order,
+                ]
+            );
     }
 }

@@ -16,8 +16,8 @@ final class AppServiceProvider extends ServiceProvider
     {
         ResourceCollection::withoutWrapping();
 
-        if (config('app.env') === 'production') {
-            URL::forceScheme('https');
+        if (config(key: 'app.env') === 'production') {
+            URL::forceScheme(scheme: 'https');
         }
     }
 }

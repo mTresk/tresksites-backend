@@ -27,9 +27,4 @@ final class WorkObserver
     {
         Cache::flush();
     }
-
-    public function forceDeleted(): void
-    {
-        Cache::flush();
-    }
 }

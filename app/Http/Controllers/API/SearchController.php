@@ -12,6 +12,8 @@ final class SearchController
 {
     public function search(SearchRequest $request)
     {
-        return SearchResource::collection(Work::search($request->input('keywords'))->get());
+        $works = Work::search(query: $request->input(key: 'keywords'))->get();
+
+        return SearchResource::collection(resource: $works);
     }
 }

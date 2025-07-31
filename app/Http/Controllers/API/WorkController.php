@@ -14,35 +14,57 @@ final class WorkController
 {
     public static function index()
     {
-        $page = request()->input('page') ?? 1;
+        $page = request()->input(key: 'page') ?? 1;
 
-        return WorkCollectionResource::collection(Cache::rememberForever('works'.$page, function () {
-            return Work::latest()->paginate(5);
-        }));
+        $works = Work::query()
+            ->latest()
+            ->paginate(perPage: 5);
+
+        $resource = Cache::rememberForever(
+            key: 'works'.$page,
+            callback: fn () => $works
+        );
+
+        return WorkCollectionResource::collection(resource: $resource);
     }
 
     public static function featured()
     {
-        return WorkCollectionResource::collection(Cache::rememberForever('featured', function () {
-            return Work::where('is_featured', true)->get();
-        }));
+        $works = Work::query()
+            ->where(
+                column: 'is_featured',
+                operator: '=',
+                value: true)
+            ->get();
+
+        $resource = Cache::rememberForever(
+            key: 'featured',
+            callback: fn () => $works
+        );
+
+        return WorkCollectionResource::collection(resource: $resource);
     }
 
     public static function show(Work $work)
     {
-        $data = WorkResource::make($work);
-
-        $otherWorks = WorkCollectionResource::collection(Work::select()
-            ->where('id', '!=', $work->id)
+        $works = Work::query()
+            ->where(
+                column: 'id',
+                operator: '!=',
+                value: $work->id
+            )
             ->inRandomOrder()
-            ->limit(3)
-            ->get());
+            ->take(value: 3)
+            ->get();
 
-        return compact('data', 'otherWorks');
+        return [
+            'data' => new WorkResource(resource: $work),
+            'otherWorks' => WorkCollectionResource::collection(resource: $works),
+        ];
     }
 
     public static function routes()
     {
-        return RouteResource::collection(Work::all());
+        return RouteResource::collection(resource: Work::get());
     }
 }

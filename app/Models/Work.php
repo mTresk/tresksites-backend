@@ -42,12 +42,15 @@ final class Work extends Model implements HasMedia
 
     public function seo(): MorphOne
     {
-        return $this->morphOne(SEO::class, 'model')->withDefault();
+        return $this->morphOne(
+            related: SEO::class,
+            name: 'model'
+        )->withDefault();
     }
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class)->using(TagWork::class);
+        return $this->belongsToMany(related: Tag::class)->using(class: TagWork::class);
     }
 
     public function registerMediaConversions(?Media $media = null): void
@@ -152,15 +155,15 @@ final class Work extends Model implements HasMedia
 
     protected function setContent(): Attribute
     {
-        $media = $this->getMedia('works');
+        $media = $this->getMedia(collectionName: 'works');
 
-        $galleryMap = collect($media)->mapWithKeys(function ($image) {
+        $galleryMap = collect(value: $media)->mapWithKeys(callback: function ($image) {
             return [
-                $image->custom_properties['gallery_id'] => $this->formatWorkImage($image),
+                $image->custom_properties['gallery_id'] => $this->formatWorkImage(image: $image),
             ];
         });
 
-        $content = collect($this->content)->map(function ($item) use ($galleryMap) {
+        $content = collect(value: $this->content)->map(callback: function ($item) use ($galleryMap) {
             if (! empty($item['data']['gallery_id']) && isset($galleryMap[$item['data']['gallery_id']])) {
                 $item['data']['images'] = $galleryMap[$item['data']['gallery_id']];
             }
@@ -175,8 +178,8 @@ final class Work extends Model implements HasMedia
 
     protected function featured(): Attribute
     {
-        $images = collect($this->getMedia('featured'))->map(fn ($image
-        ) => $this->formatFeaturedImage($image))->first();
+        $images = collect(value: $this->getMedia(collectionName: 'featured'))->map(
+            callback: fn ($image) => $this->formatFeaturedImage(image: $image))->first();
 
         return Attribute::make(
             get: fn () => $images,

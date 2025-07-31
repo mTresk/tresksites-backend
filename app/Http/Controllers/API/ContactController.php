@@ -11,6 +11,6 @@ final class ContactController
 {
     public function index()
     {
-        return ContactResource::make(Contact::first());
+        return new ContactResource(resource: Contact::first());
     }
 }

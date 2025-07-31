@@ -11,11 +11,16 @@ final class TagController
 {
     public static function index(string $slug)
     {
-        return WorkCollectionResource::collection(
-            Work::query()
-                ->whereRelation('tags', 'slug', $slug)
-                ->latest()
-                ->paginate(5)
-        );
+        $works = Work::query()
+            ->whereRelation(
+                relation: 'tags',
+                column: 'slug',
+                operator: '=',
+                value: $slug
+            )
+            ->latest()
+            ->paginate(perPage: 5);
+
+        return WorkCollectionResource::collection(resource: $works);
     }
 }

@@ -11,6 +11,6 @@ final class ServiceController
 {
     public function index()
     {
-        return ServiceResource::collection(Service::all());
+        return ServiceResource::collection(resource: Service::get());
     }
 }

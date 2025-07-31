@@ -16,21 +16,31 @@ final class OrderController
 
         $path = null;
 
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $path = $file->store('attachments', 'local');
+        if ($request->hasFile(key: 'attachment')) {
+            $file = $request->file(key: 'attachment');
+            $path = $file->store(
+                path: 'attachments',
+                options: ['local']
+            );
         }
 
         if ($formData) {
-            $order = Order::create([
-                ...$formData,
-                'attachment' => $path,
-            ]);
+            $order = Order::create(
+                attributes: [
+                    ...$formData,
+                    'attachment' => $path,
+                ]
+            );
 
-            event(new OrderReceived($order));
+            event(new OrderReceived(order: $order));
         }
 
-        return response('Сообщение отправлено!', 200)
-            ->header('Content-Type', 'text/plain');
+        return response(
+            content: 'Сообщение отправлено!',
+            status: 200
+        )->header(
+            key: 'Content-Type',
+            values: 'text/plain'
+        );
     }
 }

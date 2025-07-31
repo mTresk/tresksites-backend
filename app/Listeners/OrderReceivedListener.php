@@ -12,7 +12,7 @@ final class OrderReceivedListener
 {
     public function handle(OrderReceived $event): void
     {
-        $event->order->notify(new TelegramOrderNotification());
-        $event->order->notify(new EmailOrderNotification());
+        $event->order->notify(instance: new TelegramOrderNotification());
+        $event->order->notify(instance: new EmailOrderNotification());
     }
 }
