@@ -19,6 +19,7 @@
 		"laravel/scout": "^10.13",
 		"laravel/tinker": "^2.9",
 		"predis/predis": "^2.2",
+		"spatie/eloquent-sortable": "^4.5",
 		"spiral/roadrunner-cli": "^2.6.0",
 		"spiral/roadrunner-http": "^3.3.0"
 	},

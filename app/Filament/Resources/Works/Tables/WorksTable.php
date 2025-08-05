@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Works\Tables;
 
+use App\Filament\Actions\DownStepAction;
+use App\Filament\Actions\UpStepAction;
 use Exception;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -37,12 +39,13 @@ final class WorksTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('order_column')
             ->filters([
                 //
             ])
             ->recordActions([
-                //
+                DownStepAction::make(),
+                UpStepAction::make(),
             ])
             ->toolbarActions([
                 //

@@ -35,6 +35,7 @@ final class WorkController
                 column: 'is_featured',
                 operator: '=',
                 value: true)
+            ->orderBy('order_column')
             ->get();
 
         $resource = Cache::rememberForever(

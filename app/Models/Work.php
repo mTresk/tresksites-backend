@@ -11,15 +11,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Searchable;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 #[ObservedBy([WorkObserver::class])]
-final class Work extends Model implements HasMedia
+final class Work extends Model implements HasMedia, Sortable
 {
-    use InteractsWithMedia, Searchable;
+    use InteractsWithMedia;
+    use Searchable;
+    use SortableTrait;
 
     protected $fillable = [
         'name',
@@ -29,6 +33,7 @@ final class Work extends Model implements HasMedia
         'list',
         'content',
         'is_featured',
+        'order_column',
     ];
 
     protected $with = [
