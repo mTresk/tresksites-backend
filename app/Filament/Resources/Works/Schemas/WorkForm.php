@@ -37,7 +37,8 @@ final class WorkForm
                                 ->collection('featured')
                                 ->label('Основное изображение')
                                 ->required()
-                                ->downloadable(),
+                                ->downloadable()
+                                ->disk('public'),
                             TextInput::make('name')
                                 ->required()
                                 ->maxLength(255)
@@ -115,7 +116,8 @@ final class WorkForm
                                                 'custom_properties.gallery_id',
                                                 $get('gallery_id')
                                             ),
-                                        ),
+                                        )
+                                        ->disk('public'),
                                 ])
                                 ->label('Текст + изображение'),
                             Block::make('text')
