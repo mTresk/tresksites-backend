@@ -23,21 +23,17 @@ final class SEO
             Arr::only([
                 'title' => TextInput::make('title')
                     ->columnSpan(2)
-                    ->helperText(function (?string $state): string {
-                        return (string) Str::of((string) mb_strlen($state ?? ''))
-                            ->append(' / ')
-                            ->append(60 .' ')
-                            ->append((string) Str::of('символов')->lower());
-                    })
+                    ->helperText(fn (?string $state): string => (string) Str::of((string) mb_strlen($state ?? ''))
+                        ->append(' / ')
+                        ->append(60 .' ')
+                        ->append((string) Str::of('символов')->lower()))
                     ->reactive()
                     ->label('SEO заголовок'),
                 'description' => Textarea::make('description')
-                    ->helperText(function (?string $state): string {
-                        return (string) Str::of((string) mb_strlen($state ?? ''))
-                            ->append(' / ')
-                            ->append(160 .' ')
-                            ->append((string) Str::of('символов')->lower());
-                    })
+                    ->helperText(fn (?string $state): string => (string) Str::of((string) mb_strlen($state ?? ''))
+                        ->append(' / ')
+                        ->append(160 .' ')
+                        ->append((string) Str::of('символов')->lower()))
                     ->reactive()
                     ->label('SEO описание')
                     ->columnSpan(2),

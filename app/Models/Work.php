@@ -162,11 +162,9 @@ final class Work extends Model implements HasMedia, Sortable
     {
         $media = $this->getMedia(collectionName: 'works');
 
-        $galleryMap = collect(value: $media)->mapWithKeys(callback: function ($image) {
-            return [
-                $image->custom_properties['gallery_id'] => $this->formatWorkImage(image: $image),
-            ];
-        });
+        $galleryMap = collect(value: $media)->mapWithKeys(callback: fn ($image) => [
+            $image->custom_properties['gallery_id'] => $this->formatWorkImage(image: $image),
+        ]);
 
         $content = collect(value: $this->content)->map(callback: function ($item) use ($galleryMap) {
             if (! empty($item['data']['gallery_id']) && isset($galleryMap[$item['data']['gallery_id']])) {

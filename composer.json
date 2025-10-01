@@ -24,6 +24,7 @@
 		"spiral/roadrunner-http": "^3.3.0"
 	},
 	"require-dev": {
+		"driftingly/rector-laravel": "^2.0",
 		"fakerphp/faker": "^1.23",
 		"larastan/larastan": "^3.4",
 		"laravel-lang/common": "^6.4",
@@ -69,6 +70,7 @@
 			"npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail\" \"npm run dev\" --names=server,queue,logs,vite"
 		],
 		"analyse": [
+			"./vendor/bin/rector",
 			"./vendor/bin/phpstan analyse",
 			"./vendor/bin/pint"
 		]
