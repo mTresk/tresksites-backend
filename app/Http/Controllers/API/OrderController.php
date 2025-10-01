@@ -5,35 +5,33 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API;
 
 use App\Events\OrderReceived;
+use App\Http\Actions\Order\CreateOrder;
 use App\Http\Requests\OrderRequest;
-use App\Models\Order;
+use Illuminate\Http\Response;
 
 final class OrderController
 {
-    public function create(OrderRequest $request)
+    public function create(OrderRequest $request, CreateOrder $createOrder): Response
     {
-        $formData = $request->validated();
+        $attributes = $request->validated();
 
-        $path = null;
+        $path = '';
 
         if ($request->hasFile(key: 'attachment')) {
             $file = $request->file(key: 'attachment');
+
             $path = $file->store(
                 path: 'attachments',
                 options: ['local']
             );
         }
 
-        if ($formData) {
-            $order = Order::create(
-                attributes: [
-                    ...$formData,
-                    'attachment' => $path,
-                ]
-            );
+        $order = $createOrder->handle(
+            attributes: $attributes,
+            path: $path
+        );
 
-            event(new OrderReceived(order: $order));
-        }
+        event(new OrderReceived(order: $order));
 
         return response(
             content: 'Сообщение отправлено!',

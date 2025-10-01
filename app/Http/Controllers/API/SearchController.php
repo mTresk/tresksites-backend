@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Actions\Search\HandleSearch;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SearchResource;
-use App\Models\Work;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class SearchController
 {
-    public function search(SearchRequest $request)
+    public function search(SearchRequest $request, HandleSearch $handleSearch): AnonymousResourceCollection
     {
-        $works = Work::search(query: $request->input(key: 'keywords'))->get();
+        $query = $request->validated(key: 'keywords');
+
+        $works = $handleSearch->handle(query: $query);
 
         return SearchResource::collection(resource: $works);
     }

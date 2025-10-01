@@ -9,14 +9,13 @@ use App\Http\Controllers\API\PolicyController;
 use App\Http\Controllers\API\PriceController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\ServiceController;
-use App\Http\Controllers\API\TagController;
 use App\Http\Controllers\API\WorkController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('works', [WorkController::class, 'index']);
 Route::get('works/featured', [WorkController::class, 'featured']);
+Route::get('works/tags/{tag:slug}', [WorkController::class, 'tags']);
 Route::get('works/{work:slug}', [WorkController::class, 'show']);
-Route::get('tags/{tag:slug}', [TagController::class, 'index']);
 Route::get('policy', [PolicyController::class, 'index']);
 Route::post('orders', [OrderController::class, 'create']);
 Route::get('contacts', [ContactController::class, 'index']);

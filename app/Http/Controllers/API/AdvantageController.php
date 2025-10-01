@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Actions\Advantage\GetAdvantages;
 use App\Http\Resources\AdvantageResource;
-use App\Models\Advantage;
 
 final class AdvantageController
 {
-    public function index()
+    public function index(GetAdvantages $getAdvantages): AdvantageResource
     {
-        return new AdvantageResource(resource: Advantage::first());
+        return new AdvantageResource(resource: $getAdvantages->handle());
     }
 }

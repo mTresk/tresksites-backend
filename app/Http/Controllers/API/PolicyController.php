@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Actions\Policy\GetPolicy;
 use App\Http\Resources\PolicyResource;
-use App\Models\Policy;
 
 final class PolicyController
 {
-    public function index()
+    public function index(GetPolicy $getPolicy): PolicyResource
     {
-        return new PolicyResource(resource: Policy::first());
+        return new PolicyResource(resource: $getPolicy->handle());
     }
 }

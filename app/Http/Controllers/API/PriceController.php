@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Actions\Price\GetPrice;
 use App\Http\Resources\PriceResource;
-use App\Models\Price;
 
 final class PriceController
 {
-    public function index()
+    public function index(GetPrice $getPrice): PriceResource
     {
-        return new PriceResource(resource: Price::first());
+        return new PriceResource(resource: $getPrice->handle());
     }
 }
