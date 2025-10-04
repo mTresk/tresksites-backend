@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Policy;
+namespace App\Actions\Policy;
 
 use App\Models\Policy;
 

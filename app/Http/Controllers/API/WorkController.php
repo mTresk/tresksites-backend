@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Actions\Work\GetAllWorks;
-use App\Http\Actions\Work\GetFeaturedWorks;
-use App\Http\Actions\Work\GetOtherWorks;
-use App\Http\Actions\Work\GetWorks;
-use App\Http\Actions\Work\GetWorksByTag;
+use App\Actions\Work\GetAllWorks;
+use App\Actions\Work\GetFeaturedWorks;
+use App\Actions\Work\GetOtherWorks;
+use App\Actions\Work\GetWorks;
+use App\Actions\Work\GetWorksByTag;
 use App\Http\Resources\RouteResource;
 use App\Http\Resources\WorkCollectionResource;
 use App\Http\Resources\WorkResource;

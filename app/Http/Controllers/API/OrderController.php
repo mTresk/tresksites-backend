@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Actions\Order\CreateOrder;
 use App\Events\OrderReceived;
-use App\Http\Actions\Order\CreateOrder;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Response;
 

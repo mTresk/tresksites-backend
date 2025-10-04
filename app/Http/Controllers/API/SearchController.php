@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Actions\Search\HandleSearch;
+use App\Actions\Search\HandleSearch;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SearchResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

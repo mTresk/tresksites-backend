@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Search;
+namespace App\Actions\Search;
 
 use App\Models\Work;
 use Illuminate\Support\Collection;

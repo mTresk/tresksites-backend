@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Actions\Contact\GetContacts;
+use App\Actions\Contact\GetContacts;
 use App\Http\Resources\ContactResource;
 
 final class ContactController

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Price;
+namespace App\Actions\Price;
 
 use App\Models\Price;
 

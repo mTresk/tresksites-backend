@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Advantage;
+namespace App\Actions\Advantage;
 
 use App\Models\Advantage;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Actions\Service\GetServices;
+use App\Actions\Service\GetServices;
 use App\Http\Resources\ServiceResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 

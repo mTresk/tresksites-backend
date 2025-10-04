@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Service;
+namespace App\Actions\Service;
 
 use App\Models\Service;
 use Illuminate\Support\Collection;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Work;
+namespace App\Actions\Work;
 
 use App\Models\Work;
 use Illuminate\Support\Collection;
